@@ -18,9 +18,12 @@ package com.github.prasanthj.bloomfilter.benchmarks;
 import com.github.prasanthj.bloomfilter.BloomFilter;
 
 import org.openjdk.jmh.annotations.Benchmark;
+import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Measurement;
+import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
+import org.openjdk.jmh.annotations.Param;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
@@ -40,58 +43,60 @@ import javolution.util.FastBitSet;
 /**
  *
  */
-@State(Scope.Thread)
+@State(Scope.Benchmark)
+@Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
+@Fork(1)
+@BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.SECONDS)
-@Fork(3)
-@Warmup(iterations = 10, time = 500, timeUnit = TimeUnit.MILLISECONDS)
-@Measurement(iterations = 10, time = 500, timeUnit = TimeUnit.MILLISECONDS)
 public class BenchmarkBitSet {
+  @Param({"10000"})
+  public int size;
   private int[] indices;
+  private BloomFilter.BitSet cbs;
+  private java.util.BitSet jbs;
+  private RoaringBitmap rbs;
+  private FastBitSet fbs;
 
   @Setup
   public void setup() {
     Random rand = new Random(123);
-    int size = 10000;
     indices = new int[size];
     for(int i = 0; i < indices.length; i++) {
       indices[i] = rand.nextInt(size);
     }
+    cbs = new BloomFilter.BitSet(size);
+    jbs = new java.util.BitSet(size);
+    rbs = new RoaringBitmap();
+    fbs = new FastBitSet();
   }
 
   @Benchmark
-  public void custom_bitset(Blackhole bh) {
-    BloomFilter.BitSet bs = new BloomFilter.BitSet(10000);
+  public void customBitset() {
     for(int i : indices) {
-      bs.set(i);
+      cbs.set(i);
     }
-    bh.consume(bs);
   }
 
   @Benchmark
-  public void java_bitset(Blackhole bh) {
-    java.util.BitSet bs = new java.util.BitSet(10000);
+  public void javaBitset() {
     for(int i : indices) {
-      bs.set(i);
+      jbs.set(i);
     }
-    bh.consume(bs);
   }
 
   @Benchmark
-  public void roaring_bitset(Blackhole bh) {
-    RoaringBitmap roaringBitmap = new RoaringBitmap();
+  public void roaringBitset() {
     for(int i : indices) {
-      roaringBitmap.add(i);
+      rbs.add(i);
     }
-    bh.consume(roaringBitmap);
   }
 
   @Benchmark
-  public void fastutil_bitset(Blackhole bh) {
-    FastBitSet fbs = new FastBitSet();
+  public void fastutilBitset() {
     for(int i : indices) {
       fbs.set(i);
     }
-    bh.consume(fbs);
   }
 
   public static void main(String[] args) throws RunnerException {

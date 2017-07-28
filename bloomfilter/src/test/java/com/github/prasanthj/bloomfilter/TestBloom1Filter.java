@@ -454,8 +454,8 @@ public class TestBloom1Filter {
   }
 
   @Test
-  public void testFpp() {
-    int size = 500000;
+  public void testFpp10K() {
+    int size = 10_000;
     Bloom1Filter bf = new Bloom1Filter(size);
     int fp = 0;
     for (int i = 0; i < size; i++) {
@@ -473,6 +473,55 @@ public class TestBloom1Filter {
       }
     }
 
-    assertEquals(size * 0.05, fp, 500);
+    double actualFpp = (double) fp / (double) size;
+    assertEquals(0.05, actualFpp, 0.005);
+  }
+
+  @Test
+  public void testFpp1M() {
+    int size = 1_000_000;
+    Bloom1Filter bf = new Bloom1Filter(size);
+    int fp = 0;
+    for (int i = 0; i < size; i++) {
+      bf.addLong(i);
+    }
+
+    Random random = new Random();
+    for (int i = 0; i < size; i++) {
+      int probe = random.nextInt();
+      // out of range probes
+      if ((probe > size) || (probe < 0)) {
+        if (bf.testLong(probe)) {
+          fp++;
+        }
+      }
+    }
+
+    double actualFpp = (double) fp / (double) size;
+    assertEquals(0.05, actualFpp, 0.005);
+  }
+
+  @Test
+  public void testFpp10M() {
+    int size = 10_000_000;
+    Bloom1Filter bf = new Bloom1Filter(size);
+    int fp = 0;
+    for (int i = 0; i < size; i++) {
+      bf.addLong(i);
+    }
+
+    Random random = new Random();
+    for (int i = 0; i < size; i++) {
+      int probe = random.nextInt();
+      // out of range probes
+      if ((probe > size) || (probe < 0)) {
+        if (bf.testLong(probe)) {
+          fp++;
+        }
+      }
+    }
+
+    double actualFpp = (double) fp / (double) size;
+    assertEquals(0.05, actualFpp, 0.005);
   }
 }

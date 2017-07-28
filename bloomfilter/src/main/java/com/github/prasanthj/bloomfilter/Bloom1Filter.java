@@ -37,6 +37,8 @@ import java.util.List;
  * https://code.google.com/p/smhasher/wiki/MurmurHash2Flaw
  */
 public class Bloom1Filter {
+  private static byte[] BYTE_ARRAY_4 = new byte[4];
+  private static byte[] BYTE_ARRAY_8 = new byte[8];
   private static final double DEFAULT_FPP = 0.05;
   private static final int DEFAULT_BLOCKSIZE = 1;
   private BitSet bitSet;
@@ -223,21 +225,23 @@ public class Bloom1Filter {
   }
 
   private static byte[] intToByteArrayLE(int val) {
-    return new byte[]{(byte) (val >> 0),
-        (byte) (val >> 8),
-        (byte) (val >> 16),
-        (byte) (val >> 24)};
+    BYTE_ARRAY_4[0] = (byte) (val >> 0);
+    BYTE_ARRAY_4[1] = (byte) (val >> 8);
+    BYTE_ARRAY_4[2] = (byte) (val >> 16);
+    BYTE_ARRAY_4[3] = (byte) (val >> 24);
+    return BYTE_ARRAY_4;
   }
 
   private static byte[] longToByteArrayLE(long val) {
-    return new byte[]{(byte) (val >> 0),
-        (byte) (val >> 8),
-        (byte) (val >> 16),
-        (byte) (val >> 24),
-        (byte) (val >> 32),
-        (byte) (val >> 40),
-        (byte) (val >> 48),
-        (byte) (val >> 56),};
+    BYTE_ARRAY_8[0] = (byte) (val >> 0);
+    BYTE_ARRAY_8[1] = (byte) (val >> 8);
+    BYTE_ARRAY_8[2] = (byte) (val >> 16);
+    BYTE_ARRAY_8[3] = (byte) (val >> 24);
+    BYTE_ARRAY_8[4] = (byte) (val >> 32);
+    BYTE_ARRAY_8[5] = (byte) (val >> 40);
+    BYTE_ARRAY_8[6] = (byte) (val >> 48);
+    BYTE_ARRAY_8[7] = (byte) (val >> 56);
+    return BYTE_ARRAY_8;
   }
 
   public long getBitSize() {

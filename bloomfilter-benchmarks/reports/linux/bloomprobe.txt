@@ -1,0 +1,1910 @@
+# JMH version: 1.19
+# VM version: JDK 1.8.0_131, VM 25.131-b12
+# VM invoker: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-3.b12.el7_3.x86_64/jre/bin/java
+# VM options: -XX:AllocatePrefetchStyle=2
+# Warmup: 5 iterations, 1 s each
+# Measurement: 10 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe.testProbe
+# Parameters: (numEntries = 10000)
+
+# Run progress: 0.00% complete, ETA 00:01:00
+# Fork: 1 of 1
+# Preparing profilers: LinuxPerfProfiler LinuxPerfAsmProfiler 
+# Profilers consume stdout and stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 35.293 ns/op
+# Warmup Iteration   2: 32.831 ns/op
+# Warmup Iteration   3: 33.753 ns/op
+# Warmup Iteration   4: 31.877 ns/op
+# Warmup Iteration   5: 32.508 ns/op
+Iteration   1: 33.552 ns/op
+Iteration   2: 32.913 ns/op
+Iteration   3: 32.010 ns/op
+Iteration   4: 34.060 ns/op
+Iteration   5: 32.353 ns/op
+Iteration   6: 33.098 ns/op
+Iteration   7: 32.365 ns/op
+Iteration   8: 33.168 ns/op
+Iteration   9: 33.638 ns/op
+Iteration  10: 32.276 ns/op
+# Processing profiler results: LinuxPerfAsmProfiler LinuxPerfProfiler 
+
+
+Result "com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe.testProbe":
+  32.943 ±(99.9%) 1.030 ns/op [Average]
+  (min, avg, max) = (32.010, 32.943, 34.060), stdev = 0.681
+  CI (99.9%): [31.914, 33.973] (assumes normal distribution)
+
+Secondary result "com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe.testProbe:·asm":
+PrintAssembly processed: 188332 total address lines.
+Perf output processed (skipped 13.817 seconds):
+ Column 1: cycles (2665 events)
+ Column 2: instructions (8298 events)
+
+Hottest code regions (>10.00% "cycles" events):
+
+....[Hottest Region 1]..............................................................................
+C2, level 4, com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe, version 610 (298 bytes) 
+
+                       0x00007fc271492652: jae    0x00007fc271492885  ;*aload_1
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@15 (line 71)
+                       0x00007fc271492658: lea    (%r12,%rbx,8),%rsi  ;*getfield probeArray
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@1 (line 71)
+                       0x00007fc27149265c: xor    %eax,%eax
+                  ╭    0x00007fc27149265e: jmp    0x00007fc271492682  ;*lload
+                  │                                                  ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@121 (line 200)
+                  │                                                  ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                  │                                                  ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+                  │    0x00007fc271492660: mov    0xc(%rsp),%eax
+  1.61%    0.08%  │    0x00007fc271492664: inc    %eax               ;*iinc
+                  │                                                  ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@31 (line 71)
+                  │    0x00007fc271492666: cmp    0x8(%rsp),%eax
+                  │    0x00007fc27149266a: jge    0x00007fc271492849  ;*if_icmpge
+                  │                                                  ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@12 (line 71)
+                  │    0x00007fc271492670: mov    (%rsp),%rbp
+                  │    0x00007fc271492674: mov    0x1c(%rsp),%ebx
+  1.05%    0.02%  │    0x00007fc271492678: mov    0x8(%rsp),%r9d
+                  │    0x00007fc27149267d: mov    0x10(%rsp),%rsi    ;*aload_1
+                  │                                                  ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@15 (line 71)
+  0.04%           ↘    0x00007fc271492682: mov    0x10(%rsi,%rax,4),%r10d  ;*iaload
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@17 (line 71)
+  1.80%    0.06%       0x00007fc271492687: mov    0x14(%rbp),%r8d    ;*getfield bf
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@21 (line 72)
+  1.61%    0.02%       0x00007fc27149268b: movslq %r10d,%r11         ;*i2l  ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@26 (line 72)
+                       0x00007fc27149268e: test   %r8d,%r8d
+                       0x00007fc271492691: je     0x00007fc2714927d1  ;*invokevirtual testLong
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+                       0x00007fc271492697: mov    $0x588668520,%rcx  ;   {oop(a &apos;java/lang/Class&apos; = &apos;com/github/prasanthj/bloomfilter/Bloom1Filter&apos;)}
+                       0x00007fc2714926a1: mov    0x6c(%rcx),%edi    ;*getstatic BYTE_ARRAY_8
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::longToByteArrayLE@0 (line 236)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@2 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+  1.50%    0.01%       0x00007fc2714926a4: movsbl %r10b,%ecx         ;*i2b  ; - com.github.prasanthj.bloomfilter.Bloom1Filter::longToByteArrayLE@8 (line 236)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@2 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+                       0x00007fc2714926a8: mov    0xc(%r12,%rdi,8),%edx  ; implicit exception: dispatches to 0x00007fc2714928aa
+                       0x00007fc2714926ad: cmp    $0x7,%edx
+                       0x00007fc2714926b0: jbe    0x00007fc271492855
+                       0x00007fc2714926b6: mov    %eax,0xc(%rsp)
+  1.24%                0x00007fc2714926ba: mov    %rsi,0x10(%rsp)
+                       0x00007fc2714926bf: mov    %r9d,0x8(%rsp)
+                       0x00007fc2714926c4: mov    %ebx,0x1c(%rsp)
+                       0x00007fc2714926c8: mov    %rbp,(%rsp)
+  1.76%                0x00007fc2714926cc: mov    %r10b,0x10(%r12,%rdi,8)  ;*bastore
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::longToByteArrayLE@9 (line 236)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@2 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+                       0x00007fc2714926d1: lea    (%r12,%r8,8),%rbp  ;*getfield bf
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@21 (line 72)
+                       0x00007fc2714926d5: mov    %r8d,0x18(%rsp)
+  1.35%                0x00007fc2714926da: lea    (%r12,%rdi,8),%rsi  ;*getstatic BYTE_ARRAY_8
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::longToByteArrayLE@0 (line 236)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@2 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+                       0x00007fc2714926de: mov    %r11,%r10
+  0.04%                0x00007fc2714926e1: sar    $0x38,%r10
+                       0x00007fc2714926e5: mov    %r11,%r8
+  1.31%                0x00007fc2714926e8: sar    $0x30,%r8
+  0.08%                0x00007fc2714926ec: mov    %r10d,%r10d
+                       0x00007fc2714926ef: mov    %r8d,%r9d
+                       0x00007fc2714926f2: mov    %r11,%r8
+  1.65%    0.01%       0x00007fc2714926f5: sar    $0x28,%r8
+                       0x00007fc2714926f9: mov    %r11,%rcx
+                       0x00007fc2714926fc: sar    $0x20,%rcx
+                       0x00007fc271492700: mov    %r8d,%r8d
+  1.50%                0x00007fc271492703: mov    %ecx,%ebx
+                       0x00007fc271492705: mov    %r11,%rcx
+  0.04%                0x00007fc271492708: sar    $0x18,%rcx
+                       0x00007fc27149270c: mov    %r11,%rax
+  1.43%    0.01%       0x00007fc27149270f: sar    $0x10,%rax
+                       0x00007fc271492713: mov    %ecx,%ecx
+                       0x00007fc271492715: mov    %eax,%eax
+                       0x00007fc271492717: sar    $0x8,%r11
+  1.58%    0.01%       0x00007fc27149271b: mov    %r11d,%r11d
+                       0x00007fc27149271e: mov    %r11b,0x11(%r12,%rdi,8)  ;*bastore
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::longToByteArrayLE@20 (line 237)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@2 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+  0.04%                0x00007fc271492723: mov    %al,0x12(%r12,%rdi,8)  ;*bastore
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::longToByteArrayLE@31 (line 238)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@2 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+  1.28%    0.01%       0x00007fc271492728: mov    %cl,0x13(%r12,%rdi,8)  ;*bastore
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::longToByteArrayLE@42 (line 239)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@2 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+  0.04%                0x00007fc27149272d: mov    %bl,0x14(%r12,%rdi,8)  ;*bastore
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::longToByteArrayLE@53 (line 240)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@2 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+  1.46%    0.01%       0x00007fc271492732: mov    %r8b,0x15(%r12,%rdi,8)  ;*bastore
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::longToByteArrayLE@64 (line 241)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@2 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+                       0x00007fc271492737: mov    %r9b,0x16(%r12,%rdi,8)  ;*bastore
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::longToByteArrayLE@76 (line 242)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@2 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+  1.05%    0.58%       0x00007fc27149273c: mov    %r10b,0x17(%r12,%rdi,8)  ;*synchronization entry
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@-1 (line 118)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@1 (line 178)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+           0.05%       0x00007fc271492741: xor    %ecx,%ecx
+  1.39%    3.77%       0x00007fc271492743: callq  0x00007fc271046160  ; OopMap{rbp=Oop [0]=Oop [16]=Oop [24]=NarrowOop [28]=NarrowOop off=328}
+                                                                     ;*invokestatic hash64
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@4 (line 118)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@1 (line 178)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+                                                                     ;   {static_call}
+                       0x00007fc271492748: mov    0x18(%rsp),%r8d
+  1.46%    2.00%       0x00007fc27149274d: mov    0x2c(%r12,%r8,8),%r10d  ;*getfield bitSet
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@39 (line 187)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+           0.04%       0x00007fc271492752: mov    0xc(%r12,%r10,8),%ecx  ;*getfield data
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@42 (line 187)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+                                                                     ; implicit exception: dispatches to 0x00007fc2714928bd
+  0.04%    0.05%       0x00007fc271492757: mov    0xc(%r12,%rcx,8),%ebx  ;*arraylength
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@45 (line 187)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+                                                                     ; implicit exception: dispatches to 0x00007fc2714928cd
+  0.08%    0.11%       0x00007fc27149275c: mov    %eax,%r11d         ;*l2i  ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@6 (line 179)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+  1.13%    1.87%       0x00007fc27149275f: shr    $0x20,%rax
+           0.01%       0x00007fc271492763: mov    %eax,%r10d         ;*l2i  ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@13 (line 180)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+           0.01%       0x00007fc271492766: mov    %r11d,%eax
+  0.08%    0.02%       0x00007fc271492769: add    %r10d,%eax         ;*iadd
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@22 (line 182)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+  1.09%    1.83%       0x00007fc27149276c: mov    %eax,%edi
+                       0x00007fc27149276e: not    %edi
+           0.04%       0x00007fc271492770: test   %eax,%eax
+           0.10%       0x00007fc271492772: cmovl  %edi,%eax          ;*iload
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@36 (line 187)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+  1.13%    2.22%       0x00007fc271492775: test   %ebx,%ebx
+                       0x00007fc271492777: je     0x00007fc2714927e5
+  0.04%    0.01%       0x00007fc271492779: cmp    $0x80000000,%eax
+                   ╭   0x00007fc27149277e: jne    0x00007fc271492787
+                   │   0x00007fc271492780: xor    %edx,%edx
+                   │   0x00007fc271492782: cmp    $0xffffffffffffffff,%ebx
+                   │╭  0x00007fc271492785: je     0x00007fc27149278a
+  0.08%    0.12%   ↘│  0x00007fc271492787: cltd   
+  1.69%    1.98%    │  0x00007fc271492788: idiv   %ebx               ;*irem
+                    │                                                ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@46 (line 187)
+                    │                                                ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                    │                                                ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+ 25.55%   35.38%    ↘  0x00007fc27149278a: cmp    %ebx,%edx
+                       0x00007fc27149278c: jae    0x00007fc2714927f9  ;*laload
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@58 (line 188)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+  1.69%    0.14%       0x00007fc27149278e: mov    0xc(%r12,%r8,8),%r9d  ;*getfield k
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@72 (line 190)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+                       0x00007fc271492793: cmp    $0x2,%r9d
+                       0x00007fc271492797: jl     0x00007fc271492660  ;*if_icmpgt
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@75 (line 190)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+....................................................................................................
+ 58.87%   50.59%  <total for region 1>
+
+....[Hottest Region 2]..............................................................................
+C2, level 4, com.github.prasanthj.bloomfilter.Murmur3::hash64, version 587 (300 bytes) 
+
+                     Decoding compiled method 0x00007fc27148b090:
+                     Code:
+                     [Entry Point]
+                     [Verified Entry Point]
+                     [Constants]
+                       # {method} {0x00007fc26a2ef5f8} &apos;hash64&apos; &apos;([BII)J&apos; in &apos;com/github/prasanthj/bloomfilter/Murmur3&apos;
+                       # parm0:    rsi:rsi   = &apos;[B&apos;
+                       # parm1:    rdx       = int
+                       # parm2:    rcx       = int
+                       #           [sp+0x50]  (sp of caller)
+           0.02%       0x00007fc27148b220: mov    %eax,-0x14000(%rsp)
+  1.39%    2.74%       0x00007fc27148b227: push   %rbp
+  0.04%    0.02%       0x00007fc27148b228: sub    $0x40,%rsp         ;*synchronization entry
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@-1 (line 130)
+           0.02%       0x00007fc27148b22c: mov    %edx,0x8(%rsp)
+  1.80%    1.90%       0x00007fc27148b230: mov    %edx,%ebx
+                       0x00007fc27148b232: sar    $0x3,%ebx          ;*ishr
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@5 (line 131)
+           0.02%       0x00007fc27148b235: movslq %ecx,%r14          ;*i2l  ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@1 (line 130)
+                       0x00007fc27148b238: mov    $0x87c37b91114253d5,%rdi
+  1.39%    2.82%       0x00007fc27148b242: test   %ebx,%ebx
+                  ╭    0x00007fc27148b244: jle    0x00007fc27148b32c  ;*if_icmpge
+                  │                                                  ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@15 (line 134)
+                  │    0x00007fc27148b24a: mov    0xc(%rsi),%r10d    ;*baload
+                  │                                                  ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@27 (line 136)
+                  │                                                  ; implicit exception: dispatches to 0x00007fc27148b691
+  0.04%    0.01%  │    0x00007fc27148b24e: xor    %r9d,%r9d
+                  │    0x00007fc27148b251: xor    %r8d,%r8d
+  1.61%    3.04%  │    0x00007fc27148b254: nopl   0x0(%rax,%rax,1)
+  0.04%    0.01%  │    0x00007fc27148b25c: xchg   %ax,%ax            ;*iload
+                  │                                                  ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@18 (line 135)
+           0.01%  │ ↗  0x00007fc27148b260: cmp    %r10d,%r9d
+                  │ │  0x00007fc27148b263: jae    0x00007fc27148b4de  ;*baload
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@27 (line 136)
+                  │ │  0x00007fc27148b269: movzbq 0x10(%rsi,%r9,1),%rcx  ;*land
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@32 (line 136)
+  1.65%    2.55%  │ │  0x00007fc27148b26f: mov    %r9d,%r11d
+                  │ │  0x00007fc27148b272: add    $0x7,%r11d
+                  │ │  0x00007fc27148b276: cmp    %r10d,%r11d
+                  │ │  0x00007fc27148b279: jae    0x00007fc27148b511  ;*baload
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@38 (line 136)
+           0.01%  │ │  0x00007fc27148b27f: mov    %rcx,(%rsp)
+  1.39%    1.76%  │ │  0x00007fc27148b283: movslq %r9d,%r11          ;*baload
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@130 (line 136)
+                  │ │  0x00007fc27148b286: movzbq 0x11(%rsi,%r11,1),%r9
+           0.04%  │ │  0x00007fc27148b28c: movzbq 0x17(%rsi,%r11,1),%rcx
+                  │ │  0x00007fc27148b292: movzbq 0x12(%rsi,%r11,1),%rdx
+  1.88%    1.87%  │ │  0x00007fc27148b298: movzbq 0x13(%rsi,%r11,1),%rax
+                  │ │  0x00007fc27148b29e: movzbq 0x14(%rsi,%r11,1),%rbp
+  0.04%    0.04%  │ │  0x00007fc27148b2a4: movzbq 0x15(%rsi,%r11,1),%r13
+           0.01%  │ │  0x00007fc27148b2aa: movzbq 0x16(%rsi,%r11,1),%r11
+  1.43%    2.11%  │ │  0x00007fc27148b2b0: shl    $0x8,%r9
+                  │ │  0x00007fc27148b2b4: or     (%rsp),%r9
+           0.02%  │ │  0x00007fc27148b2b8: shl    $0x30,%r11
+                  │ │  0x00007fc27148b2bc: shl    $0x28,%r13
+  1.61%    2.22%  │ │  0x00007fc27148b2c0: shl    $0x20,%rbp
+           0.01%  │ │  0x00007fc27148b2c4: shl    $0x18,%rax
+           0.02%  │ │  0x00007fc27148b2c8: shl    $0x10,%rdx
+  0.04%           │ │  0x00007fc27148b2cc: or     %rdx,%r9
+  1.31%    2.18%  │ │  0x00007fc27148b2cf: or     %rax,%r9
+           0.01%  │ │  0x00007fc27148b2d2: or     %rbp,%r9
+           0.05%  │ │  0x00007fc27148b2d5: or     %r13,%r9
+                  │ │  0x00007fc27148b2d8: or     %r11,%r9
+  1.46%    1.87%  │ │  0x00007fc27148b2db: shl    $0x38,%rcx
+                  │ │  0x00007fc27148b2df: or     %rcx,%r9
+  0.04%    0.01%  │ │  0x00007fc27148b2e2: imul   %rdi,%r9           ;*lmul
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@147 (line 146)
+           0.04%  │ │  0x00007fc27148b2e6: rol    $0x1f,%r9
+  1.58%    1.57%  │ │  0x00007fc27148b2ea: mov    $0x4cf5ad432745937f,%r11
+                  │ │  0x00007fc27148b2f4: imul   %r11,%r9
+           0.06%  │ │  0x00007fc27148b2f8: xor    %r14,%r9           ;*lxor
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@170 (line 149)
+                  │ │  0x00007fc27148b2fb: rol    $0x1b,%r9          ;*lor  ; - java.lang.Long::rotateLeft@7 (line 1500)
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@175 (line 150)
+  1.46%    1.06%  │ │  0x00007fc27148b2ff: mov    %r9,%r14
+                  │ │  0x00007fc27148b302: shl    $0x2,%r14
+           0.02%  │ │  0x00007fc27148b306: add    %r9,%r14
+           0.04%  │ │  0x00007fc27148b309: add    $0x52dce729,%r14   ;*ladd
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@185 (line 150)
+  2.21%    1.06%  │ │  0x00007fc27148b310: mov    %r8d,%ecx
+                  │ │  0x00007fc27148b313: inc    %ecx               ;*iinc
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@187 (line 134)
+           0.01%  │ │  0x00007fc27148b315: cmp    %ebx,%ecx
+                  │╭│  0x00007fc27148b317: jge    0x00007fc27148b32c  ;*if_icmpge
+                  │││                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@15 (line 134)
+                  │││  0x00007fc27148b319: shl    $0x3,%r8d
+                  │││  0x00007fc27148b31d: mov    %r8d,%r9d
+                  │││  0x00007fc27148b320: add    $0x8,%r9d          ;*ishl
+                  │││                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@21 (line 135)
+                  │││  0x00007fc27148b324: mov    %ecx,%r8d
+                  ││╰  0x00007fc27148b327: jmpq   0x00007fc27148b260  ;*if_icmpge
+                  ││                                                 ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@15 (line 134)
+                  ↘↘   0x00007fc27148b32c: mov    0x8(%rsp),%r8d
+  1.76%    1.07%       0x00007fc27148b331: and    $0xfffffffffffffff8,%r8d  ;*ishl
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@199 (line 155)
+                       0x00007fc27148b335: mov    0x8(%rsp),%r10d
+                       0x00007fc27148b33a: sub    %r8d,%r10d         ;*isub
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@205 (line 156)
+                       0x00007fc27148b33d: movslq %r8d,%r9           ;*baload
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@351 (line 168)
+  1.39%    1.10%       0x00007fc27148b340: xor    %ecx,%ecx
+                       0x00007fc27148b342: cmp    $0x4,%r10d
+                       0x00007fc27148b346: je     0x00007fc27148b3ed
+           0.01%       0x00007fc27148b34c: cmp    $0x4,%r10d
+                       0x00007fc27148b350: jle    0x00007fc27148b36d
+                       0x00007fc27148b352: cmp    $0x7,%r10d
+                       0x00007fc27148b356: je     0x00007fc27148b390
+                       0x00007fc27148b358: cmp    $0x7,%r10d
+                       0x00007fc27148b35c: jg     0x00007fc27148b490
+                       0x00007fc27148b362: cmp    $0x6,%r10d
+                       0x00007fc27148b366: je     0x00007fc27148b3ad
+                       0x00007fc27148b368: xor    %r11d,%r11d
+                       0x00007fc27148b36b: jmp    0x00007fc27148b3cd
+                       0x00007fc27148b36d: cmp    $0x2,%r10d
+....................................................................................................
+ 25.55%   31.45%  <total for region 2>
+
+....[Hottest Regions]...............................................................................
+ 58.87%   50.59%         C2, level 4  com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe, version 610 (298 bytes) 
+ 25.55%   31.45%         C2, level 4  com.github.prasanthj.bloomfilter.Murmur3::hash64, version 587 (300 bytes) 
+  7.54%   12.40%         C2, level 4  com.github.prasanthj.bloomfilter.Murmur3::hash64, version 587 (72 bytes) 
+  3.08%    0.66%   [kernel.kallsyms]  native_write_msr_safe (0 bytes) 
+  1.80%    1.58%         C2, level 4  com.github.prasanthj.bloomfilter.Murmur3::hash64, version 587 (20 bytes) 
+  0.23%            [kernel.kallsyms]  __list_del_entry (0 bytes) 
+  0.19%            [kernel.kallsyms]  mem_cgroup_page_lruvec (0 bytes) 
+  0.15%            [kernel.kallsyms]  copy_page_rep (0 bytes) 
+  0.15%    0.01%   [kernel.kallsyms]  page_fault (0 bytes) 
+  0.08%            [kernel.kallsyms]  up_read (0 bytes) 
+  0.08%    0.11%   [kernel.kallsyms]  __srcu_read_lock (92 bytes) 
+  0.08%            [kernel.kallsyms]  numa_migrate_prep (0 bytes) 
+  0.08%    0.02%   [kernel.kallsyms]  do_numa_page (14 bytes) 
+  0.08%    0.01%   [kernel.kallsyms]  __mem_cgroup_count_vm_event (28 bytes) 
+  0.08%            [kernel.kallsyms]  vfs_write (0 bytes) 
+  0.08%    0.01%   [kernel.kallsyms]  _raw_spin_lock (18 bytes) 
+  0.04%            [kernel.kallsyms]  hrtimer_forward (0 bytes) 
+  0.04%            [kernel.kallsyms]  raw_notifier_call_chain (0 bytes) 
+  0.04%            [kernel.kallsyms]  update_min_vruntime (0 bytes) 
+  0.04%            [kernel.kallsyms]  update_cfs_rq_blocked_load (0 bytes) 
+  1.73%    3.13%  <...other 178 warm regions...>
+....................................................................................................
+ 99.96%   99.99%  <totals>
+
+....[Hottest Methods (after inlining)]..............................................................
+ 58.87%   50.59%         C2, level 4  com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe, version 610 
+ 34.90%   45.43%         C2, level 4  com.github.prasanthj.bloomfilter.Murmur3::hash64, version 587 
+  3.08%    0.66%   [kernel.kallsyms]  native_write_msr_safe 
+  0.26%    0.64%           libjvm.so  [unknown] 
+  0.23%            [kernel.kallsyms]  __list_del_entry 
+  0.19%            [kernel.kallsyms]  mem_cgroup_page_lruvec 
+  0.15%            [kernel.kallsyms]  copy_page_rep 
+  0.15%    0.01%   [kernel.kallsyms]  page_fault 
+  0.08%    0.11%   [kernel.kallsyms]  __srcu_read_lock 
+  0.08%            [kernel.kallsyms]  up_read 
+  0.08%    0.01%   [kernel.kallsyms]  vfs_write 
+  0.08%            [kernel.kallsyms]  numa_migrate_prep 
+  0.08%            [kernel.kallsyms]  ktime_get 
+  0.08%    0.01%   [kernel.kallsyms]  _raw_spin_lock 
+  0.08%    0.02%   [kernel.kallsyms]  do_numa_page 
+  0.08%    0.01%   [kernel.kallsyms]  __mem_cgroup_count_vm_event 
+  0.08%    0.02%   [kernel.kallsyms]  sys_write 
+  0.08%            [kernel.kallsyms]  __audit_syscall_exit 
+  0.04%            [kernel.kallsyms]  futex_wait 
+  0.04%    0.01%              [ext4]  ext4_mark_iloc_dirty 
+  1.31%    0.29%  <...other 35 warm methods...>
+....................................................................................................
+ 99.96%   97.83%  <totals>
+
+....[Distribution by Source]........................................................................
+ 93.77%   96.02%         C2, level 4
+  5.63%    2.74%   [kernel.kallsyms]
+  0.26%    0.64%           libjvm.so
+  0.11%    0.33%        libc-2.17.so
+  0.08%    0.04%              [ext4]
+  0.04%    0.06%  libpthread-2.17.so
+  0.04%    0.06%              [jbd2]
+  0.04%    0.05%         interpreter
+....................................................................................................
+ 99.96%   99.99%  <totals>
+
+
+Secondary result "com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe.testProbe:·perf":
+Perf stats:
+--------------------------------------------------
+
+      22090.187088      task-clock (msec)         #    0.809 CPUs utilized          
+             1,844      context-switches          #    0.083 K/sec                  
+             1,202      cpu-migrations            #    0.054 K/sec                  
+           152,081      page-faults               #    0.007 M/sec                  
+    42,975,526,657      cycles                    #    1.945 GHz                      (84.03%)
+    10,618,610,770      stalled-cycles-frontend   #   24.71% frontend cycles idle     (84.02%)
+   <not supported>      stalled-cycles-backend   
+   111,720,212,634      instructions              #    2.60  insns per cycle        
+                                                  #    0.10  stalled cycles per insn  (84.06%)
+    12,885,811,365      branches                  #  583.327 M/sec                    (66.47%)
+        12,688,813      branch-misses             #    0.10% of all branches          (27.81%)
+    19,352,128,570      L1-dcache-loads           #  876.051 M/sec                    (5.30%)
+       103,525,149      L1-dcache-load-misses     #    0.53% of all L1-dcache hits    (2.75%)
+        16,662,450      LLC-loads                 #    0.754 M/sec                    (2.75%)
+         5,739,481      LLC-load-misses           #   34.45% of all LL-cache hits     (4.15%)
+   <not supported>      L1-icache-loads          
+        89,622,743      L1-icache-load-misses     #    4.057 M/sec                    (5.51%)
+    19,225,217,464      dTLB-loads                #  870.306 M/sec                    (5.32%)
+        10,577,237      dTLB-load-misses          #    0.06% of all dTLB cache hits   (2.72%)
+         1,636,637      iTLB-loads                #    0.074 M/sec                    (2.74%)
+           703,301      iTLB-load-misses          #   42.97% of all iTLB cache hits   (4.10%)
+   <not supported>      L1-dcache-prefetches     
+        23,033,488      L1-dcache-prefetch-misses #    1.043 M/sec                    (5.48%)
+
+      27.317596577 seconds time elapsed
+
+
+
+# JMH version: 1.19
+# VM version: JDK 1.8.0_131, VM 25.131-b12
+# VM invoker: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-3.b12.el7_3.x86_64/jre/bin/java
+# VM options: -XX:AllocatePrefetchStyle=2
+# Warmup: 5 iterations, 1 s each
+# Measurement: 10 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe.testProbe
+# Parameters: (numEntries = 10000000)
+
+# Run progress: 25.00% complete, ETA 00:01:30
+# Fork: 1 of 1
+# Preparing profilers: LinuxPerfProfiler LinuxPerfAsmProfiler 
+# Profilers consume stdout and stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 36.140 ns/op
+# Warmup Iteration   2: 35.203 ns/op
+# Warmup Iteration   3: 32.453 ns/op
+# Warmup Iteration   4: 32.235 ns/op
+# Warmup Iteration   5: 32.255 ns/op
+Iteration   1: 33.933 ns/op
+Iteration   2: 32.351 ns/op
+Iteration   3: 33.515 ns/op
+Iteration   4: 31.873 ns/op
+Iteration   5: 31.948 ns/op
+Iteration   6: 32.075 ns/op
+Iteration   7: 32.098 ns/op
+Iteration   8: 32.344 ns/op
+Iteration   9: 32.928 ns/op
+Iteration  10: 32.291 ns/op
+# Processing profiler results: LinuxPerfAsmProfiler LinuxPerfProfiler 
+
+
+Result "com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe.testProbe":
+  32.536 ±(99.9%) 1.055 ns/op [Average]
+  (min, avg, max) = (31.873, 32.536, 33.933), stdev = 0.698
+  CI (99.9%): [31.481, 33.591] (assumes normal distribution)
+
+Secondary result "com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe.testProbe:·asm":
+PrintAssembly processed: 188170 total address lines.
+Perf output processed (skipped 13.976 seconds):
+ Column 1: cycles (2034 events)
+ Column 2: instructions (7452 events)
+
+Hottest code regions (>10.00% "cycles" events):
+
+....[Hottest Region 1]..............................................................................
+C2, level 4, com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe, version 606 (302 bytes) 
+
+                       0x00007f8d1d49700f: cmp    %r9d,%r11d
+                       0x00007f8d1d497012: jae    0x00007f8d1d497245  ;*aload_1
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@15 (line 71)
+                       0x00007f8d1d497018: lea    (%r12,%rbx,8),%rsi  ;*getfield probeArray
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@1 (line 71)
+                       0x00007f8d1d49701c: xor    %eax,%eax
+                  ╭    0x00007f8d1d49701e: jmp    0x00007f8d1d497042  ;*lload
+                  │                                                  ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@121 (line 200)
+                  │                                                  ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                  │                                                  ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+  0.05%           │    0x00007f8d1d497020: mov    0xc(%rsp),%eax
+  1.52%    0.08%  │    0x00007f8d1d497024: inc    %eax               ;*iinc
+                  │                                                  ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@31 (line 71)
+                  │    0x00007f8d1d497026: cmp    0x8(%rsp),%eax
+                  │    0x00007f8d1d49702a: jge    0x00007f8d1d497191  ;*if_icmpge
+                  │                                                  ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@12 (line 71)
+  0.05%           │    0x00007f8d1d497030: mov    (%rsp),%rbp
+                  │    0x00007f8d1d497034: mov    0x1c(%rsp),%ebx
+  1.13%    0.01%  │    0x00007f8d1d497038: mov    0x8(%rsp),%r9d
+                  │    0x00007f8d1d49703d: mov    0x10(%rsp),%rsi    ;*aload_1
+                  │                                                  ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@15 (line 71)
+  0.05%           ↘    0x00007f8d1d497042: mov    0x10(%rsi,%rax,4),%r10d  ;*iaload
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@17 (line 71)
+  3.34%    0.03%       0x00007f8d1d497047: mov    0x14(%rbp),%r8d    ;*getfield bf
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@21 (line 72)
+  1.43%    0.03%       0x00007f8d1d49704b: movslq %r10d,%r11         ;*i2l  ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@26 (line 72)
+                       0x00007f8d1d49704e: test   %r8d,%r8d
+                       0x00007f8d1d497051: je     0x00007f8d1d49719d  ;*invokevirtual testLong
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+                       0x00007f8d1d497057: mov    $0x5886685d0,%rcx  ;   {oop(a &apos;java/lang/Class&apos; = &apos;com/github/prasanthj/bloomfilter/Bloom1Filter&apos;)}
+                       0x00007f8d1d497061: mov    0x6c(%rcx),%edi    ;*getstatic BYTE_ARRAY_8
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::longToByteArrayLE@0 (line 236)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@2 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+  1.18%                0x00007f8d1d497064: movsbl %r10b,%ecx         ;*i2b  ; - com.github.prasanthj.bloomfilter.Bloom1Filter::longToByteArrayLE@8 (line 236)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@2 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+                       0x00007f8d1d497068: mov    0xc(%r12,%rdi,8),%edx  ; implicit exception: dispatches to 0x00007f8d1d49726a
+                       0x00007f8d1d49706d: cmp    $0x7,%edx
+                       0x00007f8d1d497070: jbe    0x00007f8d1d497215
+                       0x00007f8d1d497076: mov    %eax,0xc(%rsp)
+  1.57%                0x00007f8d1d49707a: mov    %rsi,0x10(%rsp)
+  0.05%                0x00007f8d1d49707f: mov    %r9d,0x8(%rsp)
+                       0x00007f8d1d497084: mov    %ebx,0x1c(%rsp)
+                       0x00007f8d1d497088: mov    %rbp,(%rsp)
+  1.82%    0.01%       0x00007f8d1d49708c: mov    %r10b,0x10(%r12,%rdi,8)  ;*bastore
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::longToByteArrayLE@9 (line 236)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@2 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+                       0x00007f8d1d497091: lea    (%r12,%r8,8),%rbp  ;*getfield bf
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@21 (line 72)
+                       0x00007f8d1d497095: mov    %r8d,0x18(%rsp)
+  1.57%                0x00007f8d1d49709a: lea    (%r12,%rdi,8),%rsi  ;*getstatic BYTE_ARRAY_8
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::longToByteArrayLE@0 (line 236)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@2 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+                       0x00007f8d1d49709e: mov    %r11,%r10
+                       0x00007f8d1d4970a1: sar    $0x38,%r10
+                       0x00007f8d1d4970a5: mov    %r11,%r8
+  1.72%                0x00007f8d1d4970a8: sar    $0x30,%r8
+  0.05%                0x00007f8d1d4970ac: mov    %r10d,%r10d
+                       0x00007f8d1d4970af: mov    %r8d,%r9d
+                       0x00007f8d1d4970b2: mov    %r11,%r8
+  0.88%                0x00007f8d1d4970b5: sar    $0x28,%r8
+                       0x00007f8d1d4970b9: mov    %r11,%rcx
+  0.05%                0x00007f8d1d4970bc: sar    $0x20,%rcx
+                       0x00007f8d1d4970c0: mov    %r8d,%r8d
+  1.82%                0x00007f8d1d4970c3: mov    %ecx,%ebx
+                       0x00007f8d1d4970c5: mov    %r11,%rcx
+                       0x00007f8d1d4970c8: sar    $0x18,%rcx
+                       0x00007f8d1d4970cc: mov    %r11,%rax
+  1.43%                0x00007f8d1d4970cf: sar    $0x10,%rax
+                       0x00007f8d1d4970d3: mov    %ecx,%ecx
+                       0x00007f8d1d4970d5: mov    %eax,%eax
+                       0x00007f8d1d4970d7: sar    $0x8,%r11
+  1.23%    0.01%       0x00007f8d1d4970db: mov    %r11d,%r11d
+                       0x00007f8d1d4970de: mov    %r11b,0x11(%r12,%rdi,8)  ;*bastore
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::longToByteArrayLE@20 (line 237)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@2 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+                       0x00007f8d1d4970e3: mov    %al,0x12(%r12,%rdi,8)  ;*bastore
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::longToByteArrayLE@31 (line 238)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@2 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+  1.72%                0x00007f8d1d4970e8: mov    %cl,0x13(%r12,%rdi,8)  ;*bastore
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::longToByteArrayLE@42 (line 239)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@2 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+                       0x00007f8d1d4970ed: mov    %bl,0x14(%r12,%rdi,8)  ;*bastore
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::longToByteArrayLE@53 (line 240)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@2 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+  1.43%                0x00007f8d1d4970f2: mov    %r8b,0x15(%r12,%rdi,8)  ;*bastore
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::longToByteArrayLE@64 (line 241)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@2 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+  0.05%                0x00007f8d1d4970f7: mov    %r9b,0x16(%r12,%rdi,8)  ;*bastore
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::longToByteArrayLE@76 (line 242)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@2 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+  1.33%    0.54%       0x00007f8d1d4970fc: mov    %r10b,0x17(%r12,%rdi,8)  ;*synchronization entry
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@-1 (line 118)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@1 (line 178)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+  0.05%                0x00007f8d1d497101: xor    %ecx,%ecx
+  1.47%    4.03%       0x00007f8d1d497103: callq  0x00007f8d1d046160  ; OopMap{rbp=Oop [0]=Oop [16]=Oop [24]=NarrowOop [28]=NarrowOop off=328}
+                                                                     ;*invokestatic hash64
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@4 (line 118)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@1 (line 178)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+                                                                     ;   {static_call}
+  0.15%                0x00007f8d1d497108: mov    0x18(%rsp),%r8d
+  1.67%    2.04%       0x00007f8d1d49710d: mov    0x2c(%r12,%r8,8),%r10d  ;*getfield bitSet
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@39 (line 187)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+           0.01%       0x00007f8d1d497112: mov    0xc(%r12,%r10,8),%ecx  ;*getfield data
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@42 (line 187)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+                                                                     ; implicit exception: dispatches to 0x00007f8d1d49727d
+           0.03%       0x00007f8d1d497117: mov    0xc(%r12,%rcx,8),%ebx  ;*arraylength
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@45 (line 187)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+                                                                     ; implicit exception: dispatches to 0x00007f8d1d49728d
+  0.10%    0.13%       0x00007f8d1d49711c: mov    %eax,%r11d         ;*l2i  ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@6 (line 179)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+  1.62%    2.05%       0x00007f8d1d49711f: shr    $0x20,%rax
+  0.05%    0.07%       0x00007f8d1d497123: mov    %eax,%r10d         ;*l2i  ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@13 (line 180)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+           0.01%       0x00007f8d1d497126: mov    %r11d,%eax
+           0.04%       0x00007f8d1d497129: add    %r10d,%eax         ;*iadd
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@22 (line 182)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+  1.23%    1.93%       0x00007f8d1d49712c: mov    %eax,%edi
+           0.05%       0x00007f8d1d49712e: not    %edi
+           0.01%       0x00007f8d1d497130: test   %eax,%eax
+           0.05%       0x00007f8d1d497132: cmovl  %edi,%eax          ;*iload
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@36 (line 187)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+  1.62%    2.24%       0x00007f8d1d497135: test   %ebx,%ebx
+                       0x00007f8d1d497137: je     0x00007f8d1d4971b1
+           0.01%       0x00007f8d1d497139: cmp    $0x80000000,%eax
+                   ╭   0x00007f8d1d49713e: jne    0x00007f8d1d497147
+                   │   0x00007f8d1d497140: xor    %edx,%edx
+                   │   0x00007f8d1d497142: cmp    $0xffffffffffffffff,%ebx
+                   │╭  0x00007f8d1d497145: je     0x00007f8d1d49714a
+  0.05%    0.11%   ↘│  0x00007f8d1d497147: cltd   
+  1.72%    1.70%    │  0x00007f8d1d497148: idiv   %ebx               ;*irem
+                    │                                                ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@46 (line 187)
+                    │                                                ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                    │                                                ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+ 23.89%   35.94%    ↘  0x00007f8d1d49714a: cmp    %ebx,%edx
+                       0x00007f8d1d49714c: jae    0x00007f8d1d4971c5  ;*laload
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@58 (line 188)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+  1.82%    0.11%       0x00007f8d1d49714e: mov    0xc(%r12,%r8,8),%r9d  ;*getfield k
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@72 (line 190)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+                                                                     ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe@27 (line 72)
+                       0x00007f8d1d497153: cmp    $0x2,%r9d
+                       0x00007f8d1d497157: jl     0x00007f8d1d497020  ;*if_icmpgt
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testBytes@75 (line 190)
+                                                                     ; - com.github.prasanthj.bloomfilter.Bloom1Filter::testLong@5 (line 216)
+....................................................................................................
+ 60.91%   51.29%  <total for region 1>
+
+....[Hottest Region 2]..............................................................................
+C2, level 4, com.github.prasanthj.bloomfilter.Murmur3::hash64, version 584 (300 bytes) 
+
+                     Decoding compiled method 0x00007f8d1d488690:
+                     Code:
+                     [Entry Point]
+                     [Verified Entry Point]
+                     [Constants]
+                       # {method} {0x00007f8d14e4a5f8} &apos;hash64&apos; &apos;([BII)J&apos; in &apos;com/github/prasanthj/bloomfilter/Murmur3&apos;
+                       # parm0:    rsi:rsi   = &apos;[B&apos;
+                       # parm1:    rdx       = int
+                       # parm2:    rcx       = int
+                       #           [sp+0x50]  (sp of caller)
+           0.01%       0x00007f8d1d488820: mov    %eax,-0x14000(%rsp)
+  1.43%    2.68%       0x00007f8d1d488827: push   %rbp
+           0.03%       0x00007f8d1d488828: sub    $0x40,%rsp         ;*synchronization entry
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@-1 (line 130)
+           0.01%       0x00007f8d1d48882c: mov    %edx,0x8(%rsp)
+  1.72%    2.13%       0x00007f8d1d488830: mov    %edx,%ebx
+           0.01%       0x00007f8d1d488832: sar    $0x3,%ebx          ;*ishr
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@5 (line 131)
+           0.01%       0x00007f8d1d488835: movslq %ecx,%r14          ;*i2l  ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@1 (line 130)
+                       0x00007f8d1d488838: mov    $0x87c37b91114253d5,%rdi
+  1.72%    2.68%       0x00007f8d1d488842: test   %ebx,%ebx
+                  ╭    0x00007f8d1d488844: jle    0x00007f8d1d48892c  ;*if_icmpge
+                  │                                                  ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@15 (line 134)
+                  │    0x00007f8d1d48884a: mov    0xc(%rsi),%r10d    ;*baload
+                  │                                                  ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@27 (line 136)
+                  │                                                  ; implicit exception: dispatches to 0x00007f8d1d488c91
+                  │    0x00007f8d1d48884e: xor    %r9d,%r9d
+                  │    0x00007f8d1d488851: xor    %r8d,%r8d
+  1.28%    2.99%  │    0x00007f8d1d488854: nopl   0x0(%rax,%rax,1)
+           0.01%  │    0x00007f8d1d48885c: xchg   %ax,%ax            ;*iload
+                  │                                                  ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@18 (line 135)
+           0.01%  │ ↗  0x00007f8d1d488860: cmp    %r10d,%r9d
+                  │ │  0x00007f8d1d488863: jae    0x00007f8d1d488ade  ;*baload
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@27 (line 136)
+                  │ │  0x00007f8d1d488869: movzbq 0x10(%rsi,%r9,1),%rcx  ;*land
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@32 (line 136)
+  1.47%    1.97%  │ │  0x00007f8d1d48886f: mov    %r9d,%r11d
+           0.01%  │ │  0x00007f8d1d488872: add    $0x7,%r11d
+                  │ │  0x00007f8d1d488876: cmp    %r10d,%r11d
+                  │ │  0x00007f8d1d488879: jae    0x00007f8d1d488b11  ;*baload
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@38 (line 136)
+                  │ │  0x00007f8d1d48887f: mov    %rcx,(%rsp)
+  1.18%    1.84%  │ │  0x00007f8d1d488883: movslq %r9d,%r11          ;*baload
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@130 (line 136)
+                  │ │  0x00007f8d1d488886: movzbq 0x11(%rsi,%r11,1),%r9
+           0.01%  │ │  0x00007f8d1d48888c: movzbq 0x17(%rsi,%r11,1),%rcx
+                  │ │  0x00007f8d1d488892: movzbq 0x12(%rsi,%r11,1),%rdx
+  1.47%    2.09%  │ │  0x00007f8d1d488898: movzbq 0x13(%rsi,%r11,1),%rax
+                  │ │  0x00007f8d1d48889e: movzbq 0x14(%rsi,%r11,1),%rbp
+  0.05%           │ │  0x00007f8d1d4888a4: movzbq 0x15(%rsi,%r11,1),%r13
+                  │ │  0x00007f8d1d4888aa: movzbq 0x16(%rsi,%r11,1),%r11
+  1.28%    2.05%  │ │  0x00007f8d1d4888b0: shl    $0x8,%r9
+                  │ │  0x00007f8d1d4888b4: or     (%rsp),%r9
+  0.05%           │ │  0x00007f8d1d4888b8: shl    $0x30,%r11
+  0.05%           │ │  0x00007f8d1d4888bc: shl    $0x28,%r13
+  2.26%    2.04%  │ │  0x00007f8d1d4888c0: shl    $0x20,%rbp
+  0.05%           │ │  0x00007f8d1d4888c4: shl    $0x18,%rax
+  0.05%           │ │  0x00007f8d1d4888c8: shl    $0x10,%rdx
+                  │ │  0x00007f8d1d4888cc: or     %rdx,%r9
+  1.18%    2.28%  │ │  0x00007f8d1d4888cf: or     %rax,%r9
+                  │ │  0x00007f8d1d4888d2: or     %rbp,%r9
+           0.03%  │ │  0x00007f8d1d4888d5: or     %r13,%r9
+                  │ │  0x00007f8d1d4888d8: or     %r11,%r9
+  1.62%    2.31%  │ │  0x00007f8d1d4888db: shl    $0x38,%rcx
+                  │ │  0x00007f8d1d4888df: or     %rcx,%r9
+           0.03%  │ │  0x00007f8d1d4888e2: imul   %rdi,%r9           ;*lmul
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@147 (line 146)
+                  │ │  0x00007f8d1d4888e6: rol    $0x1f,%r9
+  1.33%    1.54%  │ │  0x00007f8d1d4888ea: mov    $0x4cf5ad432745937f,%r11
+                  │ │  0x00007f8d1d4888f4: imul   %r11,%r9
+                  │ │  0x00007f8d1d4888f8: xor    %r14,%r9           ;*lxor
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@170 (line 149)
+  0.05%           │ │  0x00007f8d1d4888fb: rol    $0x1b,%r9          ;*lor  ; - java.lang.Long::rotateLeft@7 (line 1500)
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@175 (line 150)
+  1.38%    1.01%  │ │  0x00007f8d1d4888ff: mov    %r9,%r14
+                  │ │  0x00007f8d1d488902: shl    $0x2,%r14
+           0.01%  │ │  0x00007f8d1d488906: add    %r9,%r14
+           0.01%  │ │  0x00007f8d1d488909: add    $0x52dce729,%r14   ;*ladd
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@185 (line 150)
+  1.57%    1.21%  │ │  0x00007f8d1d488910: mov    %r8d,%ecx
+                  │ │  0x00007f8d1d488913: inc    %ecx               ;*iinc
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@187 (line 134)
+  0.05%           │ │  0x00007f8d1d488915: cmp    %ebx,%ecx
+                  │╭│  0x00007f8d1d488917: jge    0x00007f8d1d48892c  ;*if_icmpge
+                  │││                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@15 (line 134)
+                  │││  0x00007f8d1d488919: shl    $0x3,%r8d
+                  │││  0x00007f8d1d48891d: mov    %r8d,%r9d
+                  │││  0x00007f8d1d488920: add    $0x8,%r9d          ;*ishl
+                  │││                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@21 (line 135)
+                  │││  0x00007f8d1d488924: mov    %ecx,%r8d
+                  ││╰  0x00007f8d1d488927: jmpq   0x00007f8d1d488860  ;*if_icmpge
+                  ││                                                 ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@15 (line 134)
+                  ↘↘   0x00007f8d1d48892c: mov    0x8(%rsp),%r8d
+  1.87%    1.14%       0x00007f8d1d488931: and    $0xfffffffffffffff8,%r8d  ;*ishl
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@199 (line 155)
+                       0x00007f8d1d488935: mov    0x8(%rsp),%r10d
+                       0x00007f8d1d48893a: sub    %r8d,%r10d         ;*isub
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@205 (line 156)
+                       0x00007f8d1d48893d: movslq %r8d,%r9           ;*baload
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@351 (line 168)
+  1.62%    1.19%       0x00007f8d1d488940: xor    %ecx,%ecx
+                       0x00007f8d1d488942: cmp    $0x4,%r10d
+                       0x00007f8d1d488946: je     0x00007f8d1d4889ed
+  0.05%                0x00007f8d1d48894c: cmp    $0x4,%r10d
+                       0x00007f8d1d488950: jle    0x00007f8d1d48896d
+                       0x00007f8d1d488952: cmp    $0x7,%r10d
+                       0x00007f8d1d488956: je     0x00007f8d1d488990
+                       0x00007f8d1d488958: cmp    $0x7,%r10d
+                       0x00007f8d1d48895c: jg     0x00007f8d1d488a90
+                       0x00007f8d1d488962: cmp    $0x6,%r10d
+                       0x00007f8d1d488966: je     0x00007f8d1d4889ad
+                       0x00007f8d1d488968: xor    %r11d,%r11d
+                       0x00007f8d1d48896b: jmp    0x00007f8d1d4889cd
+                       0x00007f8d1d48896d: cmp    $0x2,%r10d
+....................................................................................................
+ 24.78%   31.39%  <total for region 2>
+
+....[Hottest Regions]...............................................................................
+ 60.91%   51.29%         C2, level 4  com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe, version 606 (302 bytes) 
+ 24.78%   31.39%         C2, level 4  com.github.prasanthj.bloomfilter.Murmur3::hash64, version 584 (300 bytes) 
+  8.16%   13.00%         C2, level 4  com.github.prasanthj.bloomfilter.Murmur3::hash64, version 584 (72 bytes) 
+  1.82%    1.69%         C2, level 4  com.github.prasanthj.bloomfilter.Murmur3::hash64, version 584 (0 bytes) 
+  1.52%    0.27%   [kernel.kallsyms]  native_write_msr_safe (0 bytes) 
+  0.25%            [kernel.kallsyms]  _raw_spin_lock_irqsave (0 bytes) 
+  0.15%            [kernel.kallsyms]  account_user_time (24 bytes) 
+  0.10%            [kernel.kallsyms]  read_tsc (0 bytes) 
+  0.10%            [kernel.kallsyms]  change_protection_range (0 bytes) 
+  0.10%            [kernel.kallsyms]  apic_timer_interrupt (0 bytes) 
+  0.10%    0.08%           libjvm.so  [unknown] (56 bytes) 
+  0.05%            [kernel.kallsyms]  update_vsyscall (0 bytes) 
+  0.05%    0.03%   [kernel.kallsyms]  native_read_tsc (6 bytes) 
+  0.05%            [kernel.kallsyms]  x2apic_send_IPI_mask (0 bytes) 
+  0.05%            [kernel.kallsyms]  enqueue_hrtimer (0 bytes) 
+  0.05%            [kernel.kallsyms]  __hrtimer_run_queues (0 bytes) 
+  0.05%    0.07%   [kernel.kallsyms]  __srcu_read_unlock (0 bytes) 
+  0.05%            [kernel.kallsyms]  update_rq_clock.part.74 (0 bytes) 
+  0.05%            [kernel.kallsyms]  finish_task_switch (0 bytes) 
+  0.05%            [kernel.kallsyms]  scheduler_tick (0 bytes) 
+  1.57%    2.17%  <...other 142 warm regions...>
+....................................................................................................
+100.00%   99.99%  <totals>
+
+....[Hottest Methods (after inlining)]..............................................................
+ 60.91%   51.29%         C2, level 4  com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe::testProbe, version 606 
+ 34.76%   46.08%         C2, level 4  com.github.prasanthj.bloomfilter.Murmur3::hash64, version 584 
+  1.52%    0.27%   [kernel.kallsyms]  native_write_msr_safe 
+  0.25%            [kernel.kallsyms]  _raw_spin_lock_irqsave 
+  0.20%    0.50%           libjvm.so  [unknown] 
+  0.15%            [kernel.kallsyms]  apic_timer_interrupt 
+  0.15%            [kernel.kallsyms]  account_user_time 
+  0.10%            [kernel.kallsyms]  change_protection_range 
+  0.10%            [kernel.kallsyms]  read_tsc 
+  0.05%            [kernel.kallsyms]  update_cfs_shares 
+  0.05%            [kernel.kallsyms]  _raw_spin_unlock_irqrestore 
+  0.05%            [kernel.kallsyms]  x2apic_send_IPI_mask 
+  0.05%    0.08%        libc-2.17.so  _IO_default_xsputn 
+  0.05%    0.01%              [ext4]  ext4_mark_iloc_dirty 
+  0.05%                 libc-2.17.so  __libc_enable_asynccancel 
+  0.05%    0.07%   [kernel.kallsyms]  __srcu_read_unlock 
+  0.05%    0.04%   [kernel.kallsyms]  __sb_start_write 
+  0.05%    0.03%   [kernel.kallsyms]  native_read_tsc 
+  0.05%    0.03%   [kernel.kallsyms]  fput 
+  0.05%            [kernel.kallsyms]  update_wall_time 
+  1.33%    0.27%  <...other 27 warm methods...>
+....................................................................................................
+100.00%   98.66%  <totals>
+
+....[Distribution by Source]........................................................................
+ 95.67%   97.37%         C2, level 4
+  3.88%    1.34%   [kernel.kallsyms]
+  0.20%    0.50%           libjvm.so
+  0.15%    0.40%        libc-2.17.so
+  0.05%    0.09%      hsdis-amd64.so
+  0.05%    0.12%              [ext4]
+....................................................................................................
+100.00%   99.99%  <totals>
+
+
+Secondary result "com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe.testProbe:·perf":
+Perf stats:
+--------------------------------------------------
+
+      22241.816414      task-clock (msec)         #    0.816 CPUs utilized          
+             1,362      context-switches          #    0.061 K/sec                  
+             1,402      cpu-migrations            #    0.063 K/sec                  
+            89,045      page-faults               #    0.004 M/sec                  
+    43,269,062,882      cycles                    #    1.945 GHz                      (83.98%)
+     9,838,187,055      stalled-cycles-frontend   #   22.74% frontend cycles idle     (83.98%)
+   <not supported>      stalled-cycles-backend   
+   112,707,219,410      instructions              #    2.60  insns per cycle        
+                                                  #    0.09  stalled cycles per insn  (84.13%)
+    12,941,040,560      branches                  #  581.834 M/sec                    (73.20%)
+         6,724,473      branch-misses             #    0.05% of all branches          (34.45%)
+    19,458,480,372      L1-dcache-loads           #  874.860 M/sec                    (5.26%)
+       122,312,347      L1-dcache-load-misses     #    0.63% of all L1-dcache hits    (2.78%)
+        21,352,034      LLC-loads                 #    0.960 M/sec                    (2.77%)
+         6,544,666      LLC-load-misses           #   30.65% of all LL-cache hits     (4.16%)
+   <not supported>      L1-icache-loads          
+        52,318,256      L1-icache-load-misses     #    2.352 M/sec                    (5.53%)
+    19,285,947,037      dTLB-loads                #  867.103 M/sec                    (5.36%)
+        13,040,702      dTLB-load-misses          #    0.07% of all dTLB cache hits   (2.77%)
+           658,452      iTLB-loads                #    0.030 M/sec                    (2.77%)
+           650,360      iTLB-load-misses          #   98.77% of all iTLB cache hits   (4.14%)
+   <not supported>      L1-dcache-prefetches     
+        21,764,900      L1-dcache-prefetch-misses #    0.979 M/sec                    (5.50%)
+
+      27.253568441 seconds time elapsed
+
+
+
+# JMH version: 1.19
+# VM version: JDK 1.8.0_131, VM 25.131-b12
+# VM invoker: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-3.b12.el7_3.x86_64/jre/bin/java
+# VM options: -XX:AllocatePrefetchStyle=2
+# Warmup: 5 iterations, 1 s each
+# Measurement: 10 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe.testProbe
+# Parameters: (numEntries = 10000)
+
+# Run progress: 50.00% complete, ETA 00:01:00
+# Fork: 1 of 1
+# Preparing profilers: LinuxPerfProfiler LinuxPerfAsmProfiler 
+# Profilers consume stdout and stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 103.412 ns/op
+# Warmup Iteration   2: 76.176 ns/op
+# Warmup Iteration   3: 82.269 ns/op
+# Warmup Iteration   4: 97.714 ns/op
+# Warmup Iteration   5: 68.349 ns/op
+Iteration   1: 60.136 ns/op
+Iteration   2: 60.758 ns/op
+Iteration   3: 57.218 ns/op
+Iteration   4: 63.276 ns/op
+Iteration   5: 67.440 ns/op
+Iteration   6: 71.135 ns/op
+Iteration   7: 60.232 ns/op
+Iteration   8: 59.520 ns/op
+Iteration   9: 55.937 ns/op
+Iteration  10: 54.853 ns/op
+# Processing profiler results: LinuxPerfAsmProfiler LinuxPerfProfiler 
+
+
+Result "com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe.testProbe":
+  61.051 ±(99.9%) 7.654 ns/op [Average]
+  (min, avg, max) = (54.853, 61.051, 71.135), stdev = 5.062
+  CI (99.9%): [53.397, 68.704] (assumes normal distribution)
+
+Secondary result "com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe.testProbe:·asm":
+PrintAssembly processed: 192134 total address lines.
+Perf output processed (skipped 15.517 seconds):
+ Column 1: cycles (5772 events)
+ Column 2: instructions (12936 events)
+
+Hottest code regions (>10.00% "cycles" events):
+
+....[Hottest Region 1]..............................................................................
+C2, level 4, com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe, version 634 (496 bytes) 
+
+                            0x00007f0a454a404b: dec    %r11d
+                            0x00007f0a454a404e: cmp    %ebp,%r11d
+                            0x00007f0a454a4051: jae    0x00007f0a454a43b1  ;*aload_1
+                                                                          ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@15 (line 71)
+                            0x00007f0a454a4057: lea    (%r12,%r9,8),%rcx  ;*getfield probeArray
+                                                                          ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@1 (line 71)
+                            0x00007f0a454a405b: xor    %r10d,%r10d
+                  ╭         0x00007f0a454a405e: jmp    0x00007f0a454a4085  ;*invokevirtual testBytes
+                  │                                                       ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                  │                                                       ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  4.07%    1.18%  │ ↗  ↗↗   0x00007f0a454a4060: mov    0xc(%rsp),%r10d
+  2.15%    1.04%  │ │  ││   0x00007f0a454a4065: inc    %r10d              ;*iinc
+                  │ │  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@31 (line 71)
+  0.26%    0.01%  │ │  ││   0x00007f0a454a4068: cmp    0x8(%rsp),%r10d
+                  │ │  ││   0x00007f0a454a406d: jge    0x00007f0a454a4311  ;*if_icmpge
+                  │ │  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@12 (line 71)
+  0.16%    0.02%  │ │  ││   0x00007f0a454a4073: mov    (%rsp),%r8
+  0.24%    0.06%  │ │  ││   0x00007f0a454a4077: mov    0x28(%rsp),%r9d
+  0.02%           │ │  ││   0x00007f0a454a407c: mov    0x8(%rsp),%ebp
+                  │ │  ││   0x00007f0a454a4080: mov    0x10(%rsp),%rcx    ;*aload_1
+                  │ │  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@15 (line 71)
+  0.26%    0.01%  ↘ │  ││   0x00007f0a454a4085: mov    0x10(%rcx,%r10,4),%edi  ;*iaload
+                    │  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@17 (line 71)
+  1.61%    0.11%    │  ││   0x00007f0a454a408a: mov    0x14(%r8),%ebx     ;*getfield bf
+                    │  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@21 (line 72)
+  0.02%             │  ││   0x00007f0a454a408e: movslq %edi,%rdx          ;*i2l  ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@26 (line 72)
+  0.45%             │  ││   0x00007f0a454a4091: test   %ebx,%ebx
+                    │  ││   0x00007f0a454a4093: je     0x00007f0a454a431d  ;*invokevirtual testLong
+                    │  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+                    │  ││   0x00007f0a454a4099: mov    0x60(%r15),%rax
+  0.26%    0.05%    │  ││   0x00007f0a454a409d: mov    %rax,%r11
+                    │  ││   0x00007f0a454a40a0: add    $0x18,%r11
+  0.23%    0.03%    │  ││   0x00007f0a454a40a4: lea    (%r12,%rbx,8),%rsi  ;*getfield bf
+                    │  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@21 (line 72)
+                    │  ││   0x00007f0a454a40a8: cmp    0x70(%r15),%r11
+                   ╭│  ││   0x00007f0a454a40ac: jae    0x00007f0a454a4252
+  0.23%    0.05%   ││  ││   0x00007f0a454a40b2: mov    %rsi,0x30(%rsp)
+                   ││  ││   0x00007f0a454a40b7: mov    %rdx,0x20(%rsp)
+  0.33%    0.02%   ││  ││   0x00007f0a454a40bc: mov    %ebx,0x1c(%rsp)
+           0.01%   ││  ││   0x00007f0a454a40c0: mov    %edi,0x18(%rsp)
+  0.36%    0.02%   ││  ││   0x00007f0a454a40c4: mov    %r10d,0xc(%rsp)
+  0.17%            ││  ││   0x00007f0a454a40c9: mov    %rcx,0x10(%rsp)
+  0.19%            ││  ││   0x00007f0a454a40ce: mov    %ebp,0x8(%rsp)
+  0.12%            ││  ││   0x00007f0a454a40d2: mov    %r9d,0x28(%rsp)
+  0.29%            ││  ││   0x00007f0a454a40d7: mov    %r8,(%rsp)
+  0.17%            ││  ││   0x00007f0a454a40db: mov    0x68(%r15),%r10
+                   ││  ││   0x00007f0a454a40df: cmp    %r10,%r11
+                   ││  ││   0x00007f0a454a40e2: jae    0x00007f0a454a4295
+  0.07%    0.02%   ││  ││   0x00007f0a454a40e8: mov    %r11,0x60(%r15)
+  0.57%    0.25%   ││  ││   0x00007f0a454a40ec: movq   $0x1,(%rax)
+  0.55%    0.18%   ││  ││   0x00007f0a454a40f3: movl   $0x768,0x8(%rax)   ;   {metadata({type array byte})}
+  0.26%    0.15%   ││  ││   0x00007f0a454a40fa: movl   $0x8,0xc(%rax)
+  0.26%    0.15%   ││  ││   0x00007f0a454a4101: movq   $0x0,0x10(%rax)
+  0.57%    0.78%   ││  ││   0x00007f0a454a4109: mov    0x18(%rsp),%r11d
+  0.03%    0.02%   ││  ││   0x00007f0a454a410e: mov    %r11b,0x10(%rax)
+  0.16%    0.11%   ││  ││   0x00007f0a454a4112: mov    %rax,%rsi          ;*newarray
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::longToByteArrayLE@2 (line 195)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@2 (line 176)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+                   ││  ││   0x00007f0a454a4115: mov    0x20(%rsp),%r10
+  0.45%    0.41%   ││  ││   0x00007f0a454a411a: sar    $0x30,%r10
+  0.02%            ││  ││   0x00007f0a454a411e: mov    0x20(%rsp),%r11
+  0.19%    0.03%   ││  ││   0x00007f0a454a4123: sar    $0x28,%r11
+           0.05%   ││  ││   0x00007f0a454a4127: mov    %r10d,%r10d
+  0.36%    0.40%   ││  ││   0x00007f0a454a412a: mov    %r11d,%r8d
+                   ││  ││   0x00007f0a454a412d: mov    0x20(%rsp),%r11
+  0.24%    0.01%   ││  ││   0x00007f0a454a4132: sar    $0x20,%r11
+           0.01%   ││  ││   0x00007f0a454a4136: mov    0x20(%rsp),%r9
+  0.45%    0.43%   ││  ││   0x00007f0a454a413b: sar    $0x18,%r9
+  0.02%    0.01%   ││  ││   0x00007f0a454a413f: mov    %r11d,%r11d
+  0.23%            ││  ││   0x00007f0a454a4142: mov    %r9d,%ecx
+                   ││  ││   0x00007f0a454a4145: mov    0x20(%rsp),%r9
+  0.36%    0.22%   ││  ││   0x00007f0a454a414a: sar    $0x10,%r9
+                   ││  ││   0x00007f0a454a414e: mov    0x20(%rsp),%rbx
+  0.16%    0.01%   ││  ││   0x00007f0a454a4153: sar    $0x8,%rbx
+           0.02%   ││  ││   0x00007f0a454a4157: mov    %r9d,%r9d
+  0.35%    0.05%   ││  ││   0x00007f0a454a415a: mov    %ebx,%edi
+           0.01%   ││  ││   0x00007f0a454a415c: mov    %dil,0x11(%rsi)    ;*bastore
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::longToByteArrayLE@20 (line 195)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@2 (line 176)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.12%    0.22%   ││  ││   0x00007f0a454a4160: mov    %r9b,0x12(%rsi)    ;*bastore
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::longToByteArrayLE@29 (line 195)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@2 (line 176)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.17%    0.03%   ││  ││   0x00007f0a454a4164: mov    %cl,0x13(%rsi)     ;*bastore
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::longToByteArrayLE@38 (line 195)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@2 (line 176)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.31%    0.19%   ││  ││   0x00007f0a454a4167: mov    %r11b,0x14(%rsi)   ;*bastore
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::longToByteArrayLE@47 (line 195)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@2 (line 176)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.07%    0.12%   ││  ││   0x00007f0a454a416b: mov    %r8b,0x15(%rsi)    ;*bastore
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::longToByteArrayLE@56 (line 195)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@2 (line 176)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.10%    0.46%   ││  ││   0x00007f0a454a416f: mov    %r10b,0x16(%rsi)   ;*bastore
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::longToByteArrayLE@66 (line 195)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@2 (line 176)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.14%    0.23%   ││  ││   0x00007f0a454a4173: mov    0x20(%rsp),%r10
+  0.28%    0.17%   ││  ││   0x00007f0a454a4178: sar    $0x38,%r10
+           0.02%   ││  ││   0x00007f0a454a417c: mov    %r10d,%r10d
+  0.12%    0.34%   ││  ││   0x00007f0a454a417f: mov    %r10b,0x17(%rsi)   ;*synchronization entry
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@-1 (line 118)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@1 (line 145)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.03%    0.09%   ││  ││   0x00007f0a454a4183: mov    $0x8,%edx
+  0.19%    0.83%   ││  ││   0x00007f0a454a4188: xor    %ecx,%ecx
+           0.01%   ││  ││   0x00007f0a454a418a: nop    
+  0.29%    0.22%   ││  ││   0x00007f0a454a418b: callq  0x00007f0a45046160  ; OopMap{[0]=Oop [16]=Oop [28]=NarrowOop [40]=NarrowOop [48]=Oop off=400}
+                   ││  ││                                                 ;*invokestatic hash64
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@4 (line 118)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@1 (line 145)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+                   ││  ││                                                 ;   {static_call}
+  0.10%    0.45%   ││  ││   0x00007f0a454a4190: mov    0x1c(%rsp),%r8d
+  0.02%    0.02%   ││  ││   0x00007f0a454a4195: mov    0x20(%r12,%r8,8),%ebp  ;*getfield k
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@22 (line 149)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.36%    0.37%   ││  ││   0x00007f0a454a419a: cmp    $0x1,%ebp
+                   │╰  ││   0x00007f0a454a419d: jl     0x00007f0a454a4060  ;*if_icmpgt
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@25 (line 149)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.10%    0.29%   │   ││   0x00007f0a454a41a3: mov    0xc(%r12,%r8,8),%r13d  ;*getfield m
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@52 (line 155)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.05%            │   ││   0x00007f0a454a41a8: mov    %eax,%r11d         ;*l2i  ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@6 (line 146)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+                   │   ││   0x00007f0a454a41ab: shr    $0x20,%rax
+  0.33%    1.12%   │   ││   0x00007f0a454a41af: mov    %eax,%r10d         ;*l2i  ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@13 (line 147)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.24%    0.36%   │   ││   0x00007f0a454a41b2: test   %r13d,%r13d
+                   │   ││   0x00007f0a454a41b5: je     0x00007f0a454a4331  ;*iload
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@28 (line 150)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+                   │   ││   0x00007f0a454a41bb: mov    0x24(%r12,%r8,8),%r9d  ;*getfield bitSet
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@59 (line 156)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+           0.02%   │   ││   0x00007f0a454a41c0: mov    0xc(%r12,%r9,8),%ebx  ;*getfield data
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter$BitSet::get@1 (line 296)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@65 (line 156)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+                   │   ││                                                 ; implicit exception: dispatches to 0x00007f0a454a4331
+  0.43%    0.94%   │   ││   0x00007f0a454a41c5: vmovss 0x1c(%rsp),%xmm0
+  0.07%    0.26%   │   ││   0x00007f0a454a41cb: mov    0xc(%r12,%rbx,8),%esi  ;*laload
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter$BitSet::get@9 (line 296)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@65 (line 156)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+                   │   ││                                                 ; implicit exception: dispatches to 0x00007f0a454a4331
+  0.14%    0.22%   │   ││   0x00007f0a454a41d0: cmp    $0x7ffffffe,%ebp
+                   │   ││   0x00007f0a454a41d6: jg     0x00007f0a454a4371
+                   │   ││   0x00007f0a454a41dc: lea    (%r12,%rbx,8),%r14
+  0.43%    1.07%   │   ││   0x00007f0a454a41e0: mov    %r10d,%eax
+  0.24%    0.33%   │   ││   0x00007f0a454a41e3: mov    $0x1,%r8d
+  0.07%    0.22%   │   ││   0x00007f0a454a41e9: nopl   0x0(%rax)          ;*iload
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@28 (line 150)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+           0.01%   │   ││↗  0x00007f0a454a41f0: add    %r11d,%eax         ;*iadd
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@35 (line 150)
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.92%    1.22%   │   │││  0x00007f0a454a41f3: mov    %eax,%ecx
+  0.14%    0.29%   │   │││  0x00007f0a454a41f5: not    %ecx
+  0.33%    0.12%   │   │││  0x00007f0a454a41f7: test   %eax,%eax
+                   │   │││  0x00007f0a454a41f9: cmovl  %ecx,%eax
+  1.07%    0.96%   │   │││  0x00007f0a454a41fc: cmp    $0x80000000,%eax
+                   │ ╭ │││  0x00007f0a454a4201: jne    0x00007f0a454a420b
+                   │ │ │││  0x00007f0a454a4203: xor    %edx,%edx
+                   │ │ │││  0x00007f0a454a4205: cmp    $0xffffffffffffffff,%r13d
+                   │ │╭│││  0x00007f0a454a4209: je     0x00007f0a454a420f
+  0.33%    0.11%   │ ↘││││  0x00007f0a454a420b: cltd   
+  0.16%    0.16%   │  ││││  0x00007f0a454a420c: idiv   %r13d              ;*irem
+                   │  ││││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@55 (line 155)
+                   │  ││││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │  ││││                                                ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+ 17.57%   17.52%   │  ↘│││  0x00007f0a454a420f: movslq %edx,%r9           ;*i2l  ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@64 (line 156)
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  1.00%    0.19%   │   │││  0x00007f0a454a4212: mov    %r9,%rcx
+           0.01%   │   │││  0x00007f0a454a4215: shr    $0x6,%rcx
+  0.99%    0.32%   │   │││  0x00007f0a454a4219: mov    %ecx,%edi          ;*l2i  ; - com.github.prasanthj.bloomfilter.BloomFilter$BitSet::get@8 (line 296)
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@65 (line 156)
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+                   │   │││  0x00007f0a454a421b: cmp    %esi,%edi
+                   │   │││  0x00007f0a454a421d: jae    0x00007f0a454a42b6  ;*laload
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter$BitSet::get@9 (line 296)
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@65 (line 156)
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.76%    0.12%   │   │││  0x00007f0a454a4223: mov    $0x1,%r9d
+           0.02%   │   │││  0x00007f0a454a4229: mov    %edx,%ecx
+  0.19%    0.09%   │   │││  0x00007f0a454a422b: shl    %cl,%r9
+  1.00%    0.16%   │   │││  0x00007f0a454a422e: test   %r9,0x10(%r14,%rdi,8)
+                   │   ╰││  0x00007f0a454a4233: je     0x00007f0a454a4060  ;*ifeq
+                   │    ││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter$BitSet::get@17 (line 296)
+                   │    ││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@65 (line 156)
+                   │    ││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │    ││                                                ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  4.37%    1.29%   │    ││  0x00007f0a454a4239: mov    %ebp,%ecx
+  1.61%    1.35%   │    ││  0x00007f0a454a423b: inc    %ecx
+  0.40%    0.27%   │    ││  0x00007f0a454a423d: inc    %r8d               ;*iinc
+                   │    ││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@73 (line 149)
+                   │    ││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │    ││                                                ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+           0.01%   │    ││  0x00007f0a454a4240: cmp    %ecx,%r8d
+                   │    ╰│  0x00007f0a454a4243: jge    0x00007f0a454a4060  ;*if_icmpgt
+                   │     │                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@25 (line 149)
+                   │     │                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │     │                                                ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.42%    0.05%   │     │  0x00007f0a454a4249: mov    %r8d,%eax
+                   │     │  0x00007f0a454a424c: imul   %r10d,%eax         ;*imul
+                   │     │                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@34 (line 150)
+                   │     │                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │     │                                                ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.21%            │     ╰  0x00007f0a454a4250: jmp    0x00007f0a454a41f0
+                   ↘        0x00007f0a454a4252: mov    %rsi,0x30(%rsp)
+                            0x00007f0a454a4257: mov    %rdx,0x20(%rsp)
+                            0x00007f0a454a425c: mov    %ebx,0x1c(%rsp)
+                            0x00007f0a454a4260: mov    %edi,0x18(%rsp)
+                            0x00007f0a454a4264: mov    %r10d,0xc(%rsp)
+                            0x00007f0a454a4269: mov    %rcx,0x10(%rsp)
+                            0x00007f0a454a426e: mov    %ebp,0x8(%rsp)
+....................................................................................................
+ 52.79%   38.76%  <total for region 1>
+
+....[Hottest Region 2]..............................................................................
+libjvm.so, [unknown] (9 bytes) 
+
+ <no assembly is recorded, native region>
+....................................................................................................
+ 13.44%   16.17%  <total for region 2>
+
+....[Hottest Region 3]..............................................................................
+C2, level 4, com.github.prasanthj.bloomfilter.Murmur3::hash64, version 585 (300 bytes) 
+
+                     Decoding compiled method 0x00007f0a45485410:
+                     Code:
+                     [Entry Point]
+                     [Verified Entry Point]
+                     [Constants]
+                       # {method} {0x00007f0a3cb8b0c8} &apos;hash64&apos; &apos;([BII)J&apos; in &apos;com/github/prasanthj/bloomfilter/Murmur3&apos;
+                       # parm0:    rsi:rsi   = &apos;[B&apos;
+                       # parm1:    rdx       = int
+                       # parm2:    rcx       = int
+                       #           [sp+0x50]  (sp of caller)
+  0.40%    0.66%       0x00007f0a454855a0: mov    %eax,-0x14000(%rsp)
+  0.38%    0.10%       0x00007f0a454855a7: push   %rbp
+  0.26%    0.17%       0x00007f0a454855a8: sub    $0x40,%rsp         ;*synchronization entry
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@-1 (line 130)
+  0.24%    0.86%       0x00007f0a454855ac: mov    %edx,0x8(%rsp)
+  0.49%    0.50%       0x00007f0a454855b0: mov    %edx,%ebx
+           0.01%       0x00007f0a454855b2: sar    $0x3,%ebx          ;*ishr
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@5 (line 131)
+  0.24%    0.59%       0x00007f0a454855b5: movslq %ecx,%r14          ;*i2l  ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@1 (line 130)
+                       0x00007f0a454855b8: mov    $0x87c37b91114253d5,%rdi
+  0.26%    0.52%       0x00007f0a454855c2: test   %ebx,%ebx
+                  ╭    0x00007f0a454855c4: jle    0x00007f0a454856ac  ;*if_icmpge
+                  │                                                  ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@15 (line 134)
+  0.02%           │    0x00007f0a454855ca: mov    0xc(%rsi),%r10d    ;*baload
+                  │                                                  ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@27 (line 136)
+                  │                                                  ; implicit exception: dispatches to 0x00007f0a45485a11
+  0.28%    0.74%  │    0x00007f0a454855ce: xor    %r9d,%r9d
+                  │    0x00007f0a454855d1: xor    %r8d,%r8d
+  0.29%    0.20%  │    0x00007f0a454855d4: nopl   0x0(%rax,%rax,1)
+  0.02%    0.01%  │    0x00007f0a454855dc: xchg   %ax,%ax            ;*iload
+                  │                                                  ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@18 (line 135)
+  0.24%    0.53%  │ ↗  0x00007f0a454855e0: cmp    %r10d,%r9d
+                  │ │  0x00007f0a454855e3: jae    0x00007f0a4548585e  ;*baload
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@27 (line 136)
+                  │ │  0x00007f0a454855e9: movzbq 0x10(%rsi,%r9,1),%rcx  ;*land
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@32 (line 136)
+  0.36%    0.26%  │ │  0x00007f0a454855ef: mov    %r9d,%r11d
+                  │ │  0x00007f0a454855f2: add    $0x7,%r11d
+  0.21%    0.80%  │ │  0x00007f0a454855f6: cmp    %r10d,%r11d
+                  │ │  0x00007f0a454855f9: jae    0x00007f0a45485891  ;*baload
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@38 (line 136)
+                  │ │  0x00007f0a454855ff: mov    %rcx,(%rsp)
+  0.40%    0.36%  │ │  0x00007f0a45485603: movslq %r9d,%r11          ;*baload
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@130 (line 136)
+  0.02%    0.02%  │ │  0x00007f0a45485606: movzbq 0x11(%rsi,%r11,1),%r9
+  0.24%    0.63%  │ │  0x00007f0a4548560c: movzbq 0x17(%rsi,%r11,1),%rcx
+           0.01%  │ │  0x00007f0a45485612: movzbq 0x12(%rsi,%r11,1),%rdx
+  0.24%    0.60%  │ │  0x00007f0a45485618: movzbq 0x13(%rsi,%r11,1),%rax
+           0.02%  │ │  0x00007f0a4548561e: movzbq 0x14(%rsi,%r11,1),%rbp
+  0.24%    0.64%  │ │  0x00007f0a45485624: movzbq 0x15(%rsi,%r11,1),%r13
+           0.01%  │ │  0x00007f0a4548562a: movzbq 0x16(%rsi,%r11,1),%r11
+  0.23%    0.68%  │ │  0x00007f0a45485630: shl    $0x8,%r9
+  0.02%    0.01%  │ │  0x00007f0a45485634: or     (%rsp),%r9
+  0.31%    0.73%  │ │  0x00007f0a45485638: shl    $0x30,%r11
+                  │ │  0x00007f0a4548563c: shl    $0x28,%r13
+  0.45%    0.42%  │ │  0x00007f0a45485640: shl    $0x20,%rbp
+                  │ │  0x00007f0a45485644: shl    $0x18,%rax
+  0.24%    0.65%  │ │  0x00007f0a45485648: shl    $0x10,%rdx
+           0.01%  │ │  0x00007f0a4548564c: or     %rdx,%r9
+  0.17%    0.53%  │ │  0x00007f0a4548564f: or     %rax,%r9
+           0.02%  │ │  0x00007f0a45485652: or     %rbp,%r9
+  0.42%    1.06%  │ │  0x00007f0a45485655: or     %r13,%r9
+  0.31%    0.29%  │ │  0x00007f0a45485658: or     %r11,%r9
+  0.21%    0.61%  │ │  0x00007f0a4548565b: shl    $0x38,%rcx
+                  │ │  0x00007f0a4548565f: or     %rcx,%r9
+  0.38%    1.13%  │ │  0x00007f0a45485662: imul   %rdi,%r9           ;*lmul
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@147 (line 146)
+  0.68%    0.90%  │ │  0x00007f0a45485666: rol    $0x1f,%r9
+  0.43%    0.51%  │ │  0x00007f0a4548566a: mov    $0x4cf5ad432745937f,%r11
+                  │ │  0x00007f0a45485674: imul   %r11,%r9
+  0.97%    2.67%  │ │  0x00007f0a45485678: xor    %r14,%r9           ;*lxor
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@170 (line 149)
+  0.31%    0.67%  │ │  0x00007f0a4548567b: rol    $0x1b,%r9          ;*lor  ; - java.lang.Long::rotateLeft@7 (line 1500)
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@175 (line 150)
+  0.21%    0.85%  │ │  0x00007f0a4548567f: mov    %r9,%r14
+           0.01%  │ │  0x00007f0a45485682: shl    $0x2,%r14
+  0.50%    1.28%  │ │  0x00007f0a45485686: add    %r9,%r14
+  0.40%    0.77%  │ │  0x00007f0a45485689: add    $0x52dce729,%r14   ;*ladd
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@185 (line 150)
+  0.57%    0.42%  │ │  0x00007f0a45485690: mov    %r8d,%ecx
+                  │ │  0x00007f0a45485693: inc    %ecx               ;*iinc
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@187 (line 134)
+  0.17%    0.43%  │ │  0x00007f0a45485695: cmp    %ebx,%ecx
+                  │╭│  0x00007f0a45485697: jge    0x00007f0a454856ac  ;*if_icmpge
+                  │││                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@15 (line 134)
+                  │││  0x00007f0a45485699: shl    $0x3,%r8d
+                  │││  0x00007f0a4548569d: mov    %r8d,%r9d
+                  │││  0x00007f0a454856a0: add    $0x8,%r9d          ;*ishl
+                  │││                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@21 (line 135)
+                  │││  0x00007f0a454856a4: mov    %ecx,%r8d
+                  ││╰  0x00007f0a454856a7: jmpq   0x00007f0a454855e0  ;*if_icmpge
+                  ││                                                 ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@15 (line 134)
+           0.02%  ↘↘   0x00007f0a454856ac: mov    0x8(%rsp),%r8d
+  0.54%    0.49%       0x00007f0a454856b1: and    $0xfffffffffffffff8,%r8d  ;*ishl
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@199 (line 155)
+                       0x00007f0a454856b5: mov    0x8(%rsp),%r10d
+  0.16%    0.36%       0x00007f0a454856ba: sub    %r8d,%r10d         ;*isub
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@205 (line 156)
+                       0x00007f0a454856bd: movslq %r8d,%r9           ;*baload
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@351 (line 168)
+  0.50%    0.49%       0x00007f0a454856c0: xor    %ecx,%ecx
+                       0x00007f0a454856c2: cmp    $0x4,%r10d
+                       0x00007f0a454856c6: je     0x00007f0a4548576d
+  0.16%    0.26%       0x00007f0a454856cc: cmp    $0x4,%r10d
+                       0x00007f0a454856d0: jle    0x00007f0a454856ed
+                       0x00007f0a454856d2: cmp    $0x7,%r10d
+                       0x00007f0a454856d6: je     0x00007f0a45485710
+                       0x00007f0a454856d8: cmp    $0x7,%r10d
+                       0x00007f0a454856dc: jg     0x00007f0a45485810
+                       0x00007f0a454856e2: cmp    $0x6,%r10d
+                       0x00007f0a454856e6: je     0x00007f0a4548572d
+                       0x00007f0a454856e8: xor    %r11d,%r11d
+                       0x00007f0a454856eb: jmp    0x00007f0a4548574d
+  0.02%    0.01%       0x00007f0a454856ed: cmp    $0x2,%r10d
+....................................................................................................
+ 13.17%   24.48%  <total for region 3>
+
+....[Hottest Regions]...............................................................................
+ 52.79%   38.76%         C2, level 4  com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe, version 634 (496 bytes) 
+ 13.44%   16.17%           libjvm.so  [unknown] (9 bytes) 
+ 13.17%   24.48%         C2, level 4  com.github.prasanthj.bloomfilter.Murmur3::hash64, version 585 (300 bytes) 
+  5.89%    7.03%           libjvm.so  [unknown] (109 bytes) 
+  5.16%    5.53%         C2, level 4  com.github.prasanthj.bloomfilter.Murmur3::hash64, version 585 (77 bytes) 
+  1.40%    0.04%   [kernel.kallsyms]  clear_page_c_e (7 bytes) 
+  1.35%    0.70%         C2, level 4  com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe, version 634 (28 bytes) 
+  1.02%    0.04%   [kernel.kallsyms]  page_fault (0 bytes) 
+  0.88%    0.27%   [kernel.kallsyms]  native_write_msr_safe (0 bytes) 
+  0.47%    0.02%   [kernel.kallsyms]  do_numa_page (0 bytes) 
+  0.47%    0.34%        libc-2.17.so  __memcpy_ssse3_back (69 bytes) 
+  0.42%    0.89%         C2, level 4  com.github.prasanthj.bloomfilter.Murmur3::hash64, version 585 (30 bytes) 
+  0.36%    0.05%   [kernel.kallsyms]  mem_cgroup_charge_common (18 bytes) 
+  0.24%    0.05%   [kernel.kallsyms]  __list_del_entry (54 bytes) 
+  0.19%    0.08%   [kernel.kallsyms]  __mem_cgroup_commit_charge (29 bytes) 
+  0.17%    0.02%   [kernel.kallsyms]  _raw_spin_lock_irqsave (24 bytes) 
+  0.14%    0.05%   [kernel.kallsyms]  change_protection_range (13 bytes) 
+  0.09%    0.07%   [kernel.kallsyms]  up_read (0 bytes) 
+  0.09%    0.09%   [kernel.kallsyms]  __perf_sw_event (112 bytes) 
+  0.07%    0.15%   [kernel.kallsyms]  down_read_trylock (14 bytes) 
+  2.18%    5.18%  <...other 340 warm regions...>
+....................................................................................................
+100.00%  100.00%  <totals>
+
+....[Hottest Methods (after inlining)]..............................................................
+ 54.14%   39.46%         C2, level 4  com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe, version 634 
+ 19.70%   24.39%           libjvm.so  [unknown] 
+ 18.75%   30.91%         C2, level 4  com.github.prasanthj.bloomfilter.Murmur3::hash64, version 585 
+  1.40%    0.04%   [kernel.kallsyms]  clear_page_c_e 
+  1.02%    0.04%   [kernel.kallsyms]  page_fault 
+  0.88%    0.27%   [kernel.kallsyms]  native_write_msr_safe 
+  0.52%    0.05%   [kernel.kallsyms]  do_numa_page 
+  0.47%    0.34%        libc-2.17.so  __memcpy_ssse3_back 
+  0.36%    0.06%   [kernel.kallsyms]  mem_cgroup_charge_common 
+  0.24%    0.12%   [kernel.kallsyms]  __mem_cgroup_commit_charge 
+  0.24%    0.05%   [kernel.kallsyms]  __list_del_entry 
+  0.17%    0.02%   [kernel.kallsyms]  _raw_spin_lock_irqsave 
+  0.16%    0.06%   [kernel.kallsyms]  change_protection_range 
+  0.16%    0.17%   [kernel.kallsyms]  handle_mm_fault 
+  0.09%    0.07%   [kernel.kallsyms]  up_read 
+  0.09%    0.09%   [kernel.kallsyms]  __perf_sw_event 
+  0.07%    0.15%   [kernel.kallsyms]  down_read_trylock 
+  0.07%    0.06%   [kernel.kallsyms]  page_add_new_anon_rmap 
+  0.07%    0.11%   [kernel.kallsyms]  __mem_cgroup_count_vm_event 
+  0.07%    0.12%   [kernel.kallsyms]  __do_page_fault 
+  1.33%    1.62%  <...other 55 warm methods...>
+....................................................................................................
+100.00%   98.18%  <totals>
+
+....[Distribution by Source]........................................................................
+ 72.89%   70.37%         C2, level 4
+ 19.70%   24.40%           libjvm.so
+  6.93%    4.60%   [kernel.kallsyms]
+  0.47%    0.55%        libc-2.17.so
+  0.02%    0.02%  libpthread-2.17.so
+....................................................................................................
+100.00%  100.00%  <totals>
+
+
+Secondary result "com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe.testProbe:·perf":
+Perf stats:
+--------------------------------------------------
+
+      35917.719372      task-clock (msec)         #    1.270 CPUs utilized          
+             4,240      context-switches          #    0.118 K/sec                  
+             1,504      cpu-migrations            #    0.042 K/sec                  
+         1,258,480      page-faults               #    0.035 M/sec                  
+    76,022,467,160      cycles                    #    2.117 GHz                      (83.94%)
+    35,953,028,278      stalled-cycles-frontend   #   47.29% frontend cycles idle     (83.94%)
+   <not supported>      stalled-cycles-backend   
+    84,865,398,677      instructions              #    1.12  insns per cycle        
+                                                  #    0.42  stalled cycles per insn  (83.96%)
+    12,427,832,690      branches                  #  346.008 M/sec                    (60.19%)
+       245,903,609      branch-misses             #    1.98% of all branches          (21.83%)
+    18,646,633,289      L1-dcache-loads           #  519.149 M/sec                    (4.49%)
+       246,934,952      L1-dcache-load-misses     #    1.32% of all L1-dcache hits    (2.84%)
+        56,879,003      LLC-loads                 #    1.584 M/sec                    (2.93%)
+        23,226,587      LLC-load-misses           #   40.84% of all LL-cache hits     (4.16%)
+   <not supported>      L1-icache-loads          
+        81,270,329      L1-icache-load-misses     #    2.263 M/sec                    (5.44%)
+    17,198,531,544      dTLB-loads                #  478.831 M/sec                    (3.79%)
+        42,575,393      dTLB-load-misses          #    0.25% of all dTLB cache hits   (4.17%)
+         1,217,048      iTLB-loads                #    0.034 M/sec                    (2.77%)
+         3,191,281      iTLB-load-misses          #  262.21% of all iTLB cache hits   (4.08%)
+   <not supported>      L1-dcache-prefetches     
+        83,165,367      L1-dcache-prefetch-misses #    2.315 M/sec                    (5.41%)
+
+      28.286159213 seconds time elapsed
+
+
+
+# JMH version: 1.19
+# VM version: JDK 1.8.0_131, VM 25.131-b12
+# VM invoker: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-3.b12.el7_3.x86_64/jre/bin/java
+# VM options: -XX:AllocatePrefetchStyle=2
+# Warmup: 5 iterations, 1 s each
+# Measurement: 10 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe.testProbe
+# Parameters: (numEntries = 10000000)
+
+# Run progress: 75.00% complete, ETA 00:00:30
+# Fork: 1 of 1
+# Preparing profilers: LinuxPerfProfiler LinuxPerfAsmProfiler 
+# Profilers consume stdout and stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 116.035 ns/op
+# Warmup Iteration   2: 106.449 ns/op
+# Warmup Iteration   3: 117.093 ns/op
+# Warmup Iteration   4: 125.665 ns/op
+# Warmup Iteration   5: 122.262 ns/op
+Iteration   1: 111.822 ns/op
+Iteration   2: 110.311 ns/op
+Iteration   3: 111.207 ns/op
+Iteration   4: 108.873 ns/op
+Iteration   5: 88.610 ns/op
+Iteration   6: 83.934 ns/op
+Iteration   7: 90.445 ns/op
+Iteration   8: 83.637 ns/op
+Iteration   9: 84.111 ns/op
+Iteration  10: 88.182 ns/op
+# Processing profiler results: LinuxPerfAsmProfiler LinuxPerfProfiler 
+
+
+Result "com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe.testProbe":
+  96.113 ±(99.9%) 19.113 ns/op [Average]
+  (min, avg, max) = (83.637, 96.113, 111.822), stdev = 12.642
+  CI (99.9%): [77.001, 115.226] (assumes normal distribution)
+
+Secondary result "com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe.testProbe:·asm":
+PrintAssembly processed: 191461 total address lines.
+Perf output processed (skipped 19.421 seconds):
+ Column 1: cycles (7599 events)
+ Column 2: instructions (15560 events)
+
+Hottest code regions (>10.00% "cycles" events):
+
+....[Hottest Region 1]..............................................................................
+C2, level 4, com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe, version 626 (489 bytes) 
+
+                            0x00007f31b54a2acb: dec    %r11d
+                            0x00007f31b54a2ace: cmp    %ebp,%r11d
+                            0x00007f31b54a2ad1: jae    0x00007f31b54a2e29  ;*aload_1
+                                                                          ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@15 (line 71)
+                            0x00007f31b54a2ad7: lea    (%r12,%r9,8),%rcx  ;*getfield probeArray
+                                                                          ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@1 (line 71)
+                            0x00007f31b54a2adb: xor    %r10d,%r10d
+                  ╭         0x00007f31b54a2ade: jmp    0x00007f31b54a2b05  ;*invokevirtual testBytes
+                  │                                                       ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                  │                                                       ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+ 21.96%    9.24%  │ ↗  ↗↗   0x00007f31b54a2ae0: mov    0xc(%rsp),%r10d
+  2.24%    0.51%  │ │  ││   0x00007f31b54a2ae5: inc    %r10d              ;*iinc
+                  │ │  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@31 (line 71)
+  0.21%           │ │  ││   0x00007f31b54a2ae8: cmp    0x8(%rsp),%r10d
+                  │ │  ││   0x00007f31b54a2aed: jge    0x00007f31b54a2d2e  ;*if_icmpge
+                  │ │  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@12 (line 71)
+  0.14%    0.01%  │ │  ││   0x00007f31b54a2af3: mov    (%rsp),%r8
+  0.25%    0.01%  │ │  ││   0x00007f31b54a2af7: mov    0x28(%rsp),%r9d
+                  │ │  ││   0x00007f31b54a2afc: mov    0x8(%rsp),%ebp
+  0.01%           │ │  ││   0x00007f31b54a2b00: mov    0x10(%rsp),%rcx    ;*aload_1
+                  │ │  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@15 (line 71)
+  0.26%           ↘ │  ││   0x00007f31b54a2b05: mov    0x10(%rcx,%r10,4),%edi  ;*iaload
+                    │  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@17 (line 71)
+  1.24%    0.08%    │  ││   0x00007f31b54a2b0a: mov    0x14(%r8),%ebx     ;*getfield bf
+                    │  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@21 (line 72)
+  0.01%             │  ││   0x00007f31b54a2b0e: movslq %edi,%rdx          ;*i2l  ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@26 (line 72)
+  0.26%    0.03%    │  ││   0x00007f31b54a2b11: test   %ebx,%ebx
+                    │  ││   0x00007f31b54a2b13: je     0x00007f31b54a2d95  ;*invokevirtual testLong
+                    │  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+                    │  ││   0x00007f31b54a2b19: mov    0x60(%r15),%rax
+  0.20%    0.02%    │  ││   0x00007f31b54a2b1d: mov    %rax,%r11
+                    │  ││   0x00007f31b54a2b20: add    $0x18,%r11
+  0.22%    0.04%    │  ││   0x00007f31b54a2b24: lea    (%r12,%rbx,8),%rsi  ;*getfield bf
+                    │  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@21 (line 72)
+                    │  ││   0x00007f31b54a2b28: cmp    0x70(%r15),%r11
+                   ╭│  ││   0x00007f31b54a2b2c: jae    0x00007f31b54a2ccb
+  0.29%    0.04%   ││  ││   0x00007f31b54a2b32: mov    %rsi,0x30(%rsp)
+           0.02%   ││  ││   0x00007f31b54a2b37: mov    %rdx,0x20(%rsp)
+  0.24%    0.04%   ││  ││   0x00007f31b54a2b3c: mov    %ebx,0x1c(%rsp)
+                   ││  ││   0x00007f31b54a2b40: mov    %edi,0x18(%rsp)
+  0.34%    0.02%   ││  ││   0x00007f31b54a2b44: mov    %r10d,0xc(%rsp)
+  0.14%    0.01%   ││  ││   0x00007f31b54a2b49: mov    %rcx,0x10(%rsp)
+  0.16%    0.02%   ││  ││   0x00007f31b54a2b4e: mov    %ebp,0x8(%rsp)
+  0.11%            ││  ││   0x00007f31b54a2b52: mov    %r9d,0x28(%rsp)
+  0.41%    0.05%   ││  ││   0x00007f31b54a2b57: mov    %r8,(%rsp)
+  0.14%            ││  ││   0x00007f31b54a2b5b: mov    0x68(%r15),%r10
+  0.04%    0.01%   ││  ││   0x00007f31b54a2b5f: cmp    %r10,%r11
+                   ││  ││   0x00007f31b54a2b62: jae    0x00007f31b54a2d0d
+           0.02%   ││  ││   0x00007f31b54a2b68: mov    %r11,0x60(%r15)
+  0.49%    0.19%   ││  ││   0x00007f31b54a2b6c: movq   $0x1,(%rax)
+  0.33%    0.13%   ││  ││   0x00007f31b54a2b73: movl   $0x768,0x8(%rax)   ;   {metadata({type array byte})}
+  0.32%    0.10%   ││  ││   0x00007f31b54a2b7a: movl   $0x8,0xc(%rax)
+  0.29%    0.21%   ││  ││   0x00007f31b54a2b81: movq   $0x0,0x10(%rax)
+  0.41%    0.84%   ││  ││   0x00007f31b54a2b89: mov    0x18(%rsp),%r11d
+           0.01%   ││  ││   0x00007f31b54a2b8e: mov    %r11b,0x10(%rax)
+  0.16%    0.10%   ││  ││   0x00007f31b54a2b92: mov    %rax,%rsi          ;*newarray
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::longToByteArrayLE@2 (line 195)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@2 (line 176)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+           0.02%   ││  ││   0x00007f31b54a2b95: mov    0x20(%rsp),%r10
+  0.26%    0.08%   ││  ││   0x00007f31b54a2b9a: sar    $0x30,%r10
+           0.01%   ││  ││   0x00007f31b54a2b9e: mov    0x20(%rsp),%r11
+  0.17%    0.01%   ││  ││   0x00007f31b54a2ba3: sar    $0x28,%r11
+           0.01%   ││  ││   0x00007f31b54a2ba7: mov    %r10d,%r10d
+  0.22%    0.09%   ││  ││   0x00007f31b54a2baa: mov    %r11d,%r8d
+  0.01%    0.01%   ││  ││   0x00007f31b54a2bad: mov    0x20(%rsp),%r11
+  0.24%            ││  ││   0x00007f31b54a2bb2: sar    $0x20,%r11
+  0.03%    0.01%   ││  ││   0x00007f31b54a2bb6: mov    0x20(%rsp),%r9
+  0.20%    0.03%   ││  ││   0x00007f31b54a2bbb: sar    $0x18,%r9
+                   ││  ││   0x00007f31b54a2bbf: mov    %r11d,%r11d
+  0.14%    0.01%   ││  ││   0x00007f31b54a2bc2: mov    %r9d,%ecx
+  0.01%    0.01%   ││  ││   0x00007f31b54a2bc5: mov    0x20(%rsp),%r9
+  0.25%            ││  ││   0x00007f31b54a2bca: sar    $0x10,%r9
+                   ││  ││   0x00007f31b54a2bce: mov    0x20(%rsp),%rbx
+  0.24%    0.01%   ││  ││   0x00007f31b54a2bd3: sar    $0x8,%rbx
+           0.03%   ││  ││   0x00007f31b54a2bd7: mov    %r9d,%r9d
+  0.20%    0.07%   ││  ││   0x00007f31b54a2bda: mov    %ebx,%edi
+  0.01%    0.01%   ││  ││   0x00007f31b54a2bdc: mov    %dil,0x11(%rsi)    ;*bastore
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::longToByteArrayLE@20 (line 195)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@2 (line 176)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.26%    0.42%   ││  ││   0x00007f31b54a2be0: mov    %r9b,0x12(%rsi)    ;*bastore
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::longToByteArrayLE@29 (line 195)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@2 (line 176)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.39%    0.07%   ││  ││   0x00007f31b54a2be4: mov    %cl,0x13(%rsi)     ;*bastore
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::longToByteArrayLE@38 (line 195)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@2 (line 176)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.30%    0.15%   ││  ││   0x00007f31b54a2be7: mov    %r11b,0x14(%rsi)   ;*bastore
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::longToByteArrayLE@47 (line 195)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@2 (line 176)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.12%    0.26%   ││  ││   0x00007f31b54a2beb: mov    %r8b,0x15(%rsi)    ;*bastore
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::longToByteArrayLE@56 (line 195)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@2 (line 176)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.25%    0.55%   ││  ││   0x00007f31b54a2bef: mov    %r10b,0x16(%rsi)   ;*bastore
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::longToByteArrayLE@66 (line 195)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@2 (line 176)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.13%    0.31%   ││  ││   0x00007f31b54a2bf3: mov    0x20(%rsp),%r10
+  0.16%    0.19%   ││  ││   0x00007f31b54a2bf8: sar    $0x38,%r10
+           0.03%   ││  ││   0x00007f31b54a2bfc: mov    %r10d,%r10d
+  0.17%    0.46%   ││  ││   0x00007f31b54a2bff: mov    %r10b,0x17(%rsi)   ;*synchronization entry
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@-1 (line 118)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@1 (line 145)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.12%    0.13%   ││  ││   0x00007f31b54a2c03: mov    $0x8,%edx
+  0.20%    1.21%   ││  ││   0x00007f31b54a2c08: xor    %ecx,%ecx
+  0.03%    0.01%   ││  ││   0x00007f31b54a2c0a: nop    
+  0.29%    0.32%   ││  ││   0x00007f31b54a2c0b: callq  0x00007f31b5046160  ; OopMap{[0]=Oop [16]=Oop [28]=NarrowOop [40]=NarrowOop [48]=Oop off=400}
+                   ││  ││                                                 ;*invokestatic hash64
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@4 (line 118)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@1 (line 145)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+                   ││  ││                                                 ;   {static_call}
+  0.21%    0.77%   ││  ││   0x00007f31b54a2c10: mov    0x1c(%rsp),%r8d
+  0.03%    0.13%   ││  ││   0x00007f31b54a2c15: mov    0x20(%r12,%r8,8),%ebp  ;*getfield k
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@22 (line 149)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   ││  ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.24%    0.23%   ││  ││   0x00007f31b54a2c1a: cmp    $0x1,%ebp
+                   │╰  ││   0x00007f31b54a2c1d: jl     0x00007f31b54a2ae0  ;*if_icmpgt
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@25 (line 149)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.26%    0.98%   │   ││   0x00007f31b54a2c23: mov    0xc(%r12,%r8,8),%r13d  ;*getfield m
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@52 (line 155)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+                   │   ││   0x00007f31b54a2c28: mov    %eax,%r11d         ;*l2i  ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@6 (line 146)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.03%    0.10%   │   ││   0x00007f31b54a2c2b: shr    $0x20,%rax
+  0.21%    0.86%   │   ││   0x00007f31b54a2c2f: mov    %eax,%r10d         ;*l2i  ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@13 (line 147)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.21%    0.89%   │   ││   0x00007f31b54a2c32: test   %r13d,%r13d
+                   │   ││   0x00007f31b54a2c35: je     0x00007f31b54a2da9  ;*iload
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@28 (line 150)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+           0.01%   │   ││   0x00007f31b54a2c3b: mov    0x24(%r12,%r8,8),%r9d  ;*getfield bitSet
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@59 (line 156)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.03%    0.15%   │   ││   0x00007f31b54a2c40: mov    0xc(%r12,%r9,8),%ebx  ;*getfield data
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter$BitSet::get@1 (line 296)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@65 (line 156)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+                   │   ││                                                 ; implicit exception: dispatches to 0x00007f31b54a2da9
+  0.36%    0.77%   │   ││   0x00007f31b54a2c45: vmovss 0x1c(%rsp),%xmm0
+  0.26%    0.93%   │   ││   0x00007f31b54a2c4b: mov    0xc(%r12,%rbx,8),%esi  ;*laload
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter$BitSet::get@9 (line 296)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@65 (line 156)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+                   │   ││                                                 ; implicit exception: dispatches to 0x00007f31b54a2da9
+  0.08%    0.28%   │   ││   0x00007f31b54a2c50: cmp    $0x7ffffffe,%ebp
+                   │   ││   0x00007f31b54a2c56: jg     0x00007f31b54a2de9
+           0.12%   │   ││   0x00007f31b54a2c5c: lea    (%r12,%rbx,8),%r14
+  0.16%    0.81%   │   ││   0x00007f31b54a2c60: mov    %r10d,%eax
+  0.18%    0.80%   │   ││   0x00007f31b54a2c63: mov    $0x1,%r8d          ;*iload
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@28 (line 150)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   ││                                                 ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.03%    0.12%   │   ││↗  0x00007f31b54a2c69: add    %r11d,%eax         ;*iadd
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@35 (line 150)
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.51%    0.15%   │   │││  0x00007f31b54a2c6c: mov    %eax,%ecx
+  0.12%    1.14%   │   │││  0x00007f31b54a2c6e: not    %ecx
+  0.43%    0.81%   │   │││  0x00007f31b54a2c70: test   %eax,%eax
+  0.01%    0.10%   │   │││  0x00007f31b54a2c72: cmovl  %ecx,%eax
+  0.74%    0.68%   │   │││  0x00007f31b54a2c75: cmp    $0x80000000,%eax
+                   │ ╭ │││  0x00007f31b54a2c7a: jne    0x00007f31b54a2c84
+                   │ │ │││  0x00007f31b54a2c7c: xor    %edx,%edx
+                   │ │ │││  0x00007f31b54a2c7e: cmp    $0xffffffffffffffff,%r13d
+                   │ │╭│││  0x00007f31b54a2c82: je     0x00007f31b54a2c88
+  0.38%    0.86%   │ ↘││││  0x00007f31b54a2c84: cltd   
+  0.12%    0.17%   │  ││││  0x00007f31b54a2c85: idiv   %r13d              ;*irem
+                   │  ││││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@55 (line 155)
+                   │  ││││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │  ││││                                                ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+ 10.11%   13.52%   │  ↘│││  0x00007f31b54a2c88: movslq %edx,%r9           ;*i2l  ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@64 (line 156)
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.75%    1.01%   │   │││  0x00007f31b54a2c8b: mov    %r9,%rcx
+  0.01%    0.01%   │   │││  0x00007f31b54a2c8e: shr    $0x6,%rcx
+  0.67%    0.40%   │   │││  0x00007f31b54a2c92: mov    %ecx,%edi          ;*l2i  ; - com.github.prasanthj.bloomfilter.BloomFilter$BitSet::get@8 (line 296)
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@65 (line 156)
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.03%            │   │││  0x00007f31b54a2c94: cmp    %esi,%edi
+                   │   │││  0x00007f31b54a2c96: jae    0x00007f31b54a2d3a  ;*laload
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter$BitSet::get@9 (line 296)
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@65 (line 156)
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │   │││                                                ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.51%    1.56%   │   │││  0x00007f31b54a2c9c: mov    $0x1,%r9d
+                   │   │││  0x00007f31b54a2ca2: mov    %edx,%ecx
+  0.29%    0.15%   │   │││  0x00007f31b54a2ca4: shl    %cl,%r9
+  0.70%    0.87%   │   │││  0x00007f31b54a2ca7: test   %r9,0x10(%r14,%rdi,8)
+  0.30%    0.03%   │   ╰││  0x00007f31b54a2cac: je     0x00007f31b54a2ae0  ;*ifeq
+                   │    ││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter$BitSet::get@17 (line 296)
+                   │    ││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@65 (line 156)
+                   │    ││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │    ││                                                ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+ 21.32%    8.36%   │    ││  0x00007f31b54a2cb2: mov    %ebp,%ecx
+  1.49%    0.23%   │    ││  0x00007f31b54a2cb4: inc    %ecx
+  0.42%    0.28%   │    ││  0x00007f31b54a2cb6: inc    %r8d               ;*iinc
+                   │    ││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@73 (line 149)
+                   │    ││                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │    ││                                                ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+           0.01%   │    ││  0x00007f31b54a2cb9: cmp    %ecx,%r8d
+                   │    ╰│  0x00007f31b54a2cbc: jge    0x00007f31b54a2ae0  ;*if_icmpgt
+                   │     │                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@25 (line 149)
+                   │     │                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │     │                                                ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.30%    0.01%   │     │  0x00007f31b54a2cc2: mov    %r8d,%eax
+                   │     │  0x00007f31b54a2cc5: imul   %r10d,%eax         ;*imul
+                   │     │                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testBytes@34 (line 150)
+                   │     │                                                ; - com.github.prasanthj.bloomfilter.BloomFilter::testLong@5 (line 176)
+                   │     │                                                ; - com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe@27 (line 72)
+  0.42%    0.01%   │     ╰  0x00007f31b54a2cc9: jmp    0x00007f31b54a2c69
+                   ↘        0x00007f31b54a2ccb: mov    %rsi,0x30(%rsp)
+                            0x00007f31b54a2cd0: mov    %rdx,0x20(%rsp)
+                            0x00007f31b54a2cd5: mov    %ebx,0x1c(%rsp)
+                            0x00007f31b54a2cd9: mov    %edi,0x18(%rsp)
+                            0x00007f31b54a2cdd: mov    %r10d,0xc(%rsp)
+                            0x00007f31b54a2ce2: mov    %rcx,0x10(%rsp)
+                            0x00007f31b54a2ce7: mov    %ebp,0x8(%rsp)
+....................................................................................................
+ 77.19%   54.57%  <total for region 1>
+
+....[Hottest Region 2]..............................................................................
+C2, level 4, com.github.prasanthj.bloomfilter.Murmur3::hash64, version 583 (300 bytes) 
+
+                     Decoding compiled method 0x00007f31b548ae90:
+                     Code:
+                     [Entry Point]
+                     [Verified Entry Point]
+                     [Constants]
+                       # {method} {0x00007f31aea4c0c8} &apos;hash64&apos; &apos;([BII)J&apos; in &apos;com/github/prasanthj/bloomfilter/Murmur3&apos;
+                       # parm0:    rsi:rsi   = &apos;[B&apos;
+                       # parm1:    rdx       = int
+                       # parm2:    rcx       = int
+                       #           [sp+0x50]  (sp of caller)
+  0.36%    0.94%       0x00007f31b548b020: mov    %eax,-0x14000(%rsp)
+  0.28%    0.28%       0x00007f31b548b027: push   %rbp
+  0.16%    0.21%       0x00007f31b548b028: sub    $0x40,%rsp         ;*synchronization entry
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@-1 (line 130)
+  0.29%    1.05%       0x00007f31b548b02c: mov    %edx,0x8(%rsp)
+  0.34%    0.60%       0x00007f31b548b030: mov    %edx,%ebx
+                       0x00007f31b548b032: sar    $0x3,%ebx          ;*ishr
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@5 (line 131)
+  0.22%    1.00%       0x00007f31b548b035: movslq %ecx,%r14          ;*i2l  ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@1 (line 130)
+           0.01%       0x00007f31b548b038: mov    $0x87c37b91114253d5,%rdi
+  0.33%    0.80%       0x00007f31b548b042: test   %ebx,%ebx
+                  ╭    0x00007f31b548b044: jle    0x00007f31b548b12c  ;*if_icmpge
+                  │                                                  ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@15 (line 134)
+  0.01%    0.01%  │    0x00007f31b548b04a: mov    0xc(%rsi),%r10d    ;*baload
+                  │                                                  ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@27 (line 136)
+                  │                                                  ; implicit exception: dispatches to 0x00007f31b548b491
+  0.17%    1.09%  │    0x00007f31b548b04e: xor    %r9d,%r9d
+                  │    0x00007f31b548b051: xor    %r8d,%r8d
+  0.14%    0.39%  │    0x00007f31b548b054: nopl   0x0(%rax,%rax,1)
+           0.01%  │    0x00007f31b548b05c: xchg   %ax,%ax            ;*iload
+                  │                                                  ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@18 (line 135)
+  0.29%    0.78%  │ ↗  0x00007f31b548b060: cmp    %r10d,%r9d
+                  │ │  0x00007f31b548b063: jae    0x00007f31b548b2de  ;*baload
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@27 (line 136)
+                  │ │  0x00007f31b548b069: movzbq 0x10(%rsi,%r9,1),%rcx  ;*land
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@32 (line 136)
+  0.26%    0.46%  │ │  0x00007f31b548b06f: mov    %r9d,%r11d
+  0.03%    0.02%  │ │  0x00007f31b548b072: add    $0x7,%r11d
+  0.26%    0.96%  │ │  0x00007f31b548b076: cmp    %r10d,%r11d
+                  │ │  0x00007f31b548b079: jae    0x00007f31b548b311  ;*baload
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@38 (line 136)
+                  │ │  0x00007f31b548b07f: mov    %rcx,(%rsp)
+  0.29%    0.53%  │ │  0x00007f31b548b083: movslq %r9d,%r11          ;*baload
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@130 (line 136)
+           0.02%  │ │  0x00007f31b548b086: movzbq 0x11(%rsi,%r11,1),%r9
+  0.22%    0.84%  │ │  0x00007f31b548b08c: movzbq 0x17(%rsi,%r11,1),%rcx
+           0.01%  │ │  0x00007f31b548b092: movzbq 0x12(%rsi,%r11,1),%rdx
+  0.21%    0.75%  │ │  0x00007f31b548b098: movzbq 0x13(%rsi,%r11,1),%rax
+  0.01%    0.01%  │ │  0x00007f31b548b09e: movzbq 0x14(%rsi,%r11,1),%rbp
+  0.11%    0.78%  │ │  0x00007f31b548b0a4: movzbq 0x15(%rsi,%r11,1),%r13
+                  │ │  0x00007f31b548b0aa: movzbq 0x16(%rsi,%r11,1),%r11
+  0.18%    0.82%  │ │  0x00007f31b548b0b0: shl    $0x8,%r9
+           0.01%  │ │  0x00007f31b548b0b4: or     (%rsp),%r9
+  0.25%    0.94%  │ │  0x00007f31b548b0b8: shl    $0x30,%r11
+                  │ │  0x00007f31b548b0bc: shl    $0x28,%r13
+  0.25%    0.87%  │ │  0x00007f31b548b0c0: shl    $0x20,%rbp
+           0.02%  │ │  0x00007f31b548b0c4: shl    $0x18,%rax
+  0.17%    0.78%  │ │  0x00007f31b548b0c8: shl    $0x10,%rdx
+                  │ │  0x00007f31b548b0cc: or     %rdx,%r9
+  0.28%    0.67%  │ │  0x00007f31b548b0cf: or     %rax,%r9
+  0.01%    0.01%  │ │  0x00007f31b548b0d2: or     %rbp,%r9
+  0.45%    1.26%  │ │  0x00007f31b548b0d5: or     %r13,%r9
+  0.17%    0.43%  │ │  0x00007f31b548b0d8: or     %r11,%r9
+  0.24%    0.75%  │ │  0x00007f31b548b0db: shl    $0x38,%rcx
+                  │ │  0x00007f31b548b0df: or     %rcx,%r9
+  0.38%    1.38%  │ │  0x00007f31b548b0e2: imul   %rdi,%r9           ;*lmul
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@147 (line 146)
+  0.57%    1.01%  │ │  0x00007f31b548b0e6: rol    $0x1f,%r9
+  0.26%    0.61%  │ │  0x00007f31b548b0ea: mov    $0x4cf5ad432745937f,%r11
+                  │ │  0x00007f31b548b0f4: imul   %r11,%r9
+  0.55%    3.16%  │ │  0x00007f31b548b0f8: xor    %r14,%r9           ;*lxor
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@170 (line 149)
+  0.13%    0.64%  │ │  0x00007f31b548b0fb: rol    $0x1b,%r9          ;*lor  ; - java.lang.Long::rotateLeft@7 (line 1500)
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@175 (line 150)
+  0.21%    0.81%  │ │  0x00007f31b548b0ff: mov    %r9,%r14
+                  │ │  0x00007f31b548b102: shl    $0x2,%r14
+  0.29%    1.39%  │ │  0x00007f31b548b106: add    %r9,%r14
+  0.22%    0.52%  │ │  0x00007f31b548b109: add    $0x52dce729,%r14   ;*ladd
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@185 (line 150)
+  0.26%    0.49%  │ │  0x00007f31b548b110: mov    %r8d,%ecx
+                  │ │  0x00007f31b548b113: inc    %ecx               ;*iinc
+                  │ │                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@187 (line 134)
+  0.26%    0.79%  │ │  0x00007f31b548b115: cmp    %ebx,%ecx
+                  │╭│  0x00007f31b548b117: jge    0x00007f31b548b12c  ;*if_icmpge
+                  │││                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@15 (line 134)
+                  │││  0x00007f31b548b119: shl    $0x3,%r8d
+                  │││  0x00007f31b548b11d: mov    %r8d,%r9d
+                  │││  0x00007f31b548b120: add    $0x8,%r9d          ;*ishl
+                  │││                                                ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@21 (line 135)
+                  │││  0x00007f31b548b124: mov    %ecx,%r8d
+                  ││╰  0x00007f31b548b127: jmpq   0x00007f31b548b060  ;*if_icmpge
+                  ││                                                 ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@15 (line 134)
+           0.01%  ↘↘   0x00007f31b548b12c: mov    0x8(%rsp),%r8d
+  0.24%    0.44%       0x00007f31b548b131: and    $0xfffffffffffffff8,%r8d  ;*ishl
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@199 (line 155)
+                       0x00007f31b548b135: mov    0x8(%rsp),%r10d
+  0.25%    0.63%       0x00007f31b548b13a: sub    %r8d,%r10d         ;*isub
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@205 (line 156)
+           0.02%       0x00007f31b548b13d: movslq %r8d,%r9           ;*baload
+                                                                     ; - com.github.prasanthj.bloomfilter.Murmur3::hash64@351 (line 168)
+  0.24%    0.32%       0x00007f31b548b140: xor    %ecx,%ecx
+                       0x00007f31b548b142: cmp    $0x4,%r10d
+                       0x00007f31b548b146: je     0x00007f31b548b1ed
+  0.21%    0.69%       0x00007f31b548b14c: cmp    $0x4,%r10d
+                       0x00007f31b548b150: jle    0x00007f31b548b16d
+                       0x00007f31b548b152: cmp    $0x7,%r10d
+                       0x00007f31b548b156: je     0x00007f31b548b190
+                       0x00007f31b548b158: cmp    $0x7,%r10d
+                       0x00007f31b548b15c: jg     0x00007f31b548b290
+                       0x00007f31b548b162: cmp    $0x6,%r10d
+                       0x00007f31b548b166: je     0x00007f31b548b1ad
+                       0x00007f31b548b168: xor    %r11d,%r11d
+                       0x00007f31b548b16b: jmp    0x00007f31b548b1cd
+                       0x00007f31b548b16d: cmp    $0x2,%r10d
+....................................................................................................
+ 10.07%   31.03%  <total for region 2>
+
+....[Hottest Regions]...............................................................................
+ 77.19%   54.57%         C2, level 4  com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe, version 626 (489 bytes) 
+ 10.07%   31.03%         C2, level 4  com.github.prasanthj.bloomfilter.Murmur3::hash64, version 583 (300 bytes) 
+  3.32%    6.84%         C2, level 4  com.github.prasanthj.bloomfilter.Murmur3::hash64, version 583 (77 bytes) 
+  1.47%    0.52%   [kernel.kallsyms]  native_write_msr_safe (0 bytes) 
+  1.29%    0.58%           libjvm.so  [unknown] (9 bytes) 
+  1.05%    0.04%   [kernel.kallsyms]  page_fault (26 bytes) 
+  0.86%    0.80%         C2, level 4  com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe, version 626 (28 bytes) 
+  0.58%    1.12%         C2, level 4  com.github.prasanthj.bloomfilter.Murmur3::hash64, version 583 (20 bytes) 
+  0.53%    0.10%   [kernel.kallsyms]  do_numa_page (53 bytes) 
+  0.42%    0.47%           libjvm.so  [unknown] (15 bytes) 
+  0.22%    0.15%   [kernel.kallsyms]  change_protection_range (26 bytes) 
+  0.18%    0.01%   [kernel.kallsyms]  find_vma (25 bytes) 
+  0.13%    0.07%   [kernel.kallsyms]  ___perf_sw_event (124 bytes) 
+  0.12%    0.05%   [kernel.kallsyms]  __mem_cgroup_count_vm_event (5 bytes) 
+  0.12%    0.05%   [kernel.kallsyms]  __do_page_fault (70 bytes) 
+  0.11%    0.04%   [kernel.kallsyms]  __perf_sw_event (55 bytes) 
+  0.11%    0.03%   [kernel.kallsyms]  numa_migrate_prep (4 bytes) 
+  0.07%    0.07%   [kernel.kallsyms]  task_numa_fault (53 bytes) 
+  0.07%    0.09%   [kernel.kallsyms]  handle_mm_fault (129 bytes) 
+  0.05%    0.09%   [kernel.kallsyms]  down_read_trylock (20 bytes) 
+  2.04%    3.25%  <...other 356 warm regions...>
+....................................................................................................
+ 99.99%  100.00%  <totals>
+
+....[Hottest Methods (after inlining)]..............................................................
+ 78.05%   55.37%         C2, level 4  com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe::testProbe, version 626 
+ 13.96%   39.00%         C2, level 4  com.github.prasanthj.bloomfilter.Murmur3::hash64, version 583 
+  2.04%    1.66%           libjvm.so  [unknown] 
+  1.47%    0.52%   [kernel.kallsyms]  native_write_msr_safe 
+  1.05%    0.04%   [kernel.kallsyms]  page_fault 
+  0.58%    0.17%   [kernel.kallsyms]  do_numa_page 
+  0.22%    0.17%   [kernel.kallsyms]  change_protection_range 
+  0.18%    0.13%   [kernel.kallsyms]  __do_page_fault 
+  0.18%    0.01%   [kernel.kallsyms]  find_vma 
+  0.16%    0.11%   [kernel.kallsyms]  ___perf_sw_event 
+  0.16%    0.19%   [kernel.kallsyms]  handle_mm_fault 
+  0.13%    0.11%   [kernel.kallsyms]  __mem_cgroup_count_vm_event 
+  0.12%    0.07%   [kernel.kallsyms]  task_numa_fault 
+  0.12%    0.04%   [kernel.kallsyms]  __perf_sw_event 
+  0.11%    0.04%   [kernel.kallsyms]  numa_migrate_prep 
+  0.05%    0.14%   [kernel.kallsyms]  _raw_spin_lock 
+  0.05%    0.09%   [kernel.kallsyms]  down_read_trylock 
+  0.04%    0.01%        libc-2.17.so  __memcpy_ssse3_back 
+  0.04%    0.03%   [kernel.kallsyms]  __srcu_read_lock 
+  0.04%    0.01%   [kernel.kallsyms]  native_set_pte_at 
+  1.22%    1.08%  <...other 79 warm methods...>
+....................................................................................................
+ 99.99%   99.00%  <totals>
+
+....[Distribution by Source]........................................................................
+ 92.01%   94.37%         C2, level 4
+  5.61%    3.50%   [kernel.kallsyms]
+  2.04%    1.66%           libjvm.so
+  0.16%    0.23%        libc-2.17.so
+  0.07%    0.07%      hsdis-amd64.so
+  0.03%    0.04%  libpthread-2.17.so
+  0.03%    0.04%              [jbd2]
+  0.03%    0.05%              [ext4]
+  0.03%    0.02%         interpreter
+....................................................................................................
+ 99.99%  100.00%  <totals>
+
+
+Secondary result "com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilterProbe.testProbe:·perf":
+Perf stats:
+--------------------------------------------------
+
+      37939.691485      task-clock (msec)         #    0.971 CPUs utilized          
+             2,853      context-switches          #    0.075 K/sec                  
+             1,298      cpu-migrations            #    0.034 K/sec                  
+         1,289,096      page-faults               #    0.034 M/sec                  
+    79,763,910,049      cycles                    #    2.102 GHz                      (83.90%)
+    42,524,882,910      stalled-cycles-frontend   #   53.31% frontend cycles idle     (83.92%)
+   <not supported>      stalled-cycles-backend   
+    79,837,527,190      instructions              #    1.00  insns per cycle        
+                                                  #    0.53  stalled cycles per insn  (83.96%)
+    10,296,563,695      branches                  #  271.393 M/sec                    (61.44%)
+       290,886,797      branch-misses             #    2.83% of all branches          (23.42%)
+    15,657,201,740      L1-dcache-loads           #  412.687 M/sec                    (5.19%)
+     1,145,447,721      L1-dcache-load-misses     #    7.32% of all L1-dcache hits    (2.89%)
+       753,868,489      LLC-loads                 #   19.870 M/sec                    (2.86%)
+       125,734,483      LLC-load-misses           #   16.68% of all LL-cache hits     (4.15%)
+   <not supported>      L1-icache-loads          
+        69,763,248      L1-icache-load-misses     #    1.839 M/sec                    (5.47%)
+    15,629,880,407      dTLB-loads                #  411.966 M/sec                    (5.13%)
+       525,354,523      dTLB-load-misses          #    3.36% of all dTLB cache hits   (2.78%)
+         4,775,983      iTLB-loads                #    0.126 M/sec                    (2.77%)
+         2,352,498      iTLB-load-misses          #   49.26% of all iTLB cache hits   (4.08%)
+   <not supported>      L1-dcache-prefetches     
+        84,176,379      L1-dcache-prefetch-misses #    2.219 M/sec                    (5.43%)
+
+      39.092319769 seconds time elapsed
+
+
+
+# Run complete. Total time: 00:02:15
+
+Benchmark                                   (numEntries)  Mode  Cnt   Score    Error  Units
+BenchmarkBloom1FilterProbe.testProbe               10000  avgt   10  32.943 ±  1.030  ns/op
+BenchmarkBloom1FilterProbe.testProbe:·asm          10000  avgt          NaN             ---
+BenchmarkBloom1FilterProbe.testProbe:·cpi          10000  avgt        0.385             CPI
+BenchmarkBloom1FilterProbe.testProbe:·perf         10000  avgt          NaN             ---
+BenchmarkBloom1FilterProbe.testProbe            10000000  avgt   10  32.536 ±  1.055  ns/op
+BenchmarkBloom1FilterProbe.testProbe:·asm       10000000  avgt          NaN             ---
+BenchmarkBloom1FilterProbe.testProbe:·cpi       10000000  avgt        0.384             CPI
+BenchmarkBloom1FilterProbe.testProbe:·perf      10000000  avgt          NaN             ---
+BenchmarkBloomFilterProbe.testProbe                10000  avgt   10  61.051 ±  7.654  ns/op
+BenchmarkBloomFilterProbe.testProbe:·asm           10000  avgt          NaN             ---
+BenchmarkBloomFilterProbe.testProbe:·cpi           10000  avgt        0.896             CPI
+BenchmarkBloomFilterProbe.testProbe:·perf          10000  avgt          NaN             ---
+BenchmarkBloomFilterProbe.testProbe             10000000  avgt   10  96.113 ± 19.113  ns/op
+BenchmarkBloomFilterProbe.testProbe:·asm        10000000  avgt          NaN             ---
+BenchmarkBloomFilterProbe.testProbe:·cpi        10000000  avgt        0.999             CPI
+BenchmarkBloomFilterProbe.testProbe:·perf       10000000  avgt          NaN             ---

@@ -104,8 +104,11 @@ public class Bloom1Filter {
     if (firstHash < 0) {
       firstHash = ~firstHash;
     }
-    int wordIdx = firstHash % bitSet.getData().length;
-    long word = bitSet.getData()[wordIdx];
+
+    int wordIdx = firstHash % bitSet.data.length;
+    long word = bitSet.data[wordIdx];
+    // set MSB of the word for first hash bit
+    word |= (1L << (Long.SIZE - 1));
 
     for (int i = 2; i <= k; i++) {
       int combinedHash = hash1 + (i * hash2);
@@ -113,7 +116,7 @@ public class Bloom1Filter {
       if (combinedHash < 0) {
         combinedHash = ~combinedHash;
       }
-      int pos = combinedHash % Long.SIZE;
+      int pos = combinedHash & (Long.SIZE - 1);
       word |= (1L << pos);
     }
     bitSet.getData()[wordIdx] = word;
@@ -160,8 +163,12 @@ public class Bloom1Filter {
     if (firstHash < 0) {
       firstHash = ~firstHash;
     }
-    int wordIdx = firstHash % bitSet.getData().length;
-    long word = bitSet.getData()[wordIdx];
+    int wordIdx = firstHash % bitSet.data.length;
+    long word = bitSet.data[wordIdx];
+    // check MSB of the word for first hash bit
+    if ((word & (1L << (Long.SIZE - 1))) == 0) {
+      return false;
+    }
 
     for (int i = 2; i <= k; i++) {
       int combinedHash = hash1 + (i * hash2);
@@ -169,7 +176,7 @@ public class Bloom1Filter {
       if (combinedHash < 0) {
         combinedHash = ~combinedHash;
       }
-      int pos = combinedHash % Long.SIZE;
+      int pos = combinedHash & (Long.SIZE - 1);
       if ((word & (1L << pos)) == 0) {
         return false;
       }

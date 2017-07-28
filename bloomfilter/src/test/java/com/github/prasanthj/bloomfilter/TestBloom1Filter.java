@@ -452,4 +452,27 @@ public class TestBloom1Filter {
     assertEquals(true, bf.testString(v2));
     assertEquals(true, bf.testString(v3));
   }
+
+  @Test
+  public void testFpp() {
+    int size = 500000;
+    Bloom1Filter bf = new Bloom1Filter(size);
+    int fp = 0;
+    for (int i = 0; i < size; i++) {
+      bf.addLong(i);
+    }
+
+    Random random = new Random();
+    for (int i = 0; i < size; i++) {
+      int probe = random.nextInt();
+      // out of range probes
+      if ((probe > size) || (probe < 0)) {
+        if (bf.testLong(probe)) {
+          fp++;
+        }
+      }
+    }
+
+    assertEquals(size * 0.05, fp, 500);
+  }
 }

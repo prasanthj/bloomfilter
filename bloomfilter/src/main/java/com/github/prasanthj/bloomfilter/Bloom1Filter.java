@@ -128,8 +128,8 @@ public class Bloom1Filter {
 
     int wordIdx = firstHash % bitSet.data.length;
     long word = bitSet.data[wordIdx];
-    long mask = 0L;
-    for (int i = 1; i <= k; i++) {
+    long mask = (1L << Long.SIZE - 1);
+    for (int i = 2; i <= k; i++) {
       int combinedHash = hash1 + (i * hash2);
       // hashcode should be positive, flip all the bits if it's negative
       if (combinedHash < 0) {
@@ -184,8 +184,8 @@ public class Bloom1Filter {
     }
     int wordIdx = firstHash % bitSet.data.length;
     long word = bitSet.data[wordIdx];
-    long mask = 0L;
-    for (int i = 1; i <= k; i++) {
+    long mask = (1L << Long.SIZE - 1);
+    for (int i = 2; i <= k; i++) {
       int combinedHash = hash1 + (i * hash2);
       // hashcode should be positive, flip all the bits if it's negative
       if (combinedHash < 0) {

@@ -12,6 +12,7 @@
  */
 package com.github.prasanthj.bloomfilter.benchmarks;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.openjdk.jmh.annotations.Benchmark;
@@ -38,43 +39,36 @@ import com.github.prasanthj.bloomfilter.BloomFilter;
 
 @State(Scope.Benchmark)
 @Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 10, time = 1, timeUnit = TimeUnit.SECONDS)
 @Fork(1)
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 public class BenchmarkBloomFilterProbe {
+  public static final int PROBE_COUNT = 20_000_000;
+
   @Param({"10000", "10000000"})
-  private int size;
+  private int numEntries;
+  private int[] probeArray;
   private BloomFilter bf;
 
   @Setup
   public void setup() {
-    bf = new BloomFilter(size);
-    for (int i = 0; i < size; i++) {
+    bf = new BloomFilter(numEntries);
+    for (int i = 0; i < numEntries; i++) {
       bf.addLong(i);
     }
-  }
 
-  @Benchmark
-  @OperationsPerInvocation(1)
-  public void testProbe1BloomFilter() {
-    for (int i = 1; i >= 0 ; i--) {
-      bf.testLong(i);
+    Random random = new Random(123);
+    probeArray = new int[PROBE_COUNT];
+    for (int i = 0; i < PROBE_COUNT; i++) {
+      probeArray[i] = random.nextInt();
     }
   }
 
   @Benchmark
-  @OperationsPerInvocation(20000)
-  public void testProbe20KBloomFilter() {
-    for (int i = 20000; i >= 0 ; i--) {
-      bf.testLong(i);
-    }
-  }
-
-  @Benchmark
-  @OperationsPerInvocation(20000000)
-  public void testProbe20MBloomFilter() {
-    for (int i = 20000000; i >= 0 ; i--) {
+  @OperationsPerInvocation(PROBE_COUNT)
+  public void testProbe() {
+    for (int i : probeArray) {
       bf.testLong(i);
     }
   }
@@ -89,7 +83,8 @@ public class BenchmarkBloomFilterProbe {
    *    $ java -jar target/benchmarks.jar BenchmarkBloomFilterProbe -prof perf     -f 1 (Linux)
    *    $ java -jar target/benchmarks.jar BenchmarkBloomFilterProbe -prof perfnorm -f 3 (Linux)
    *    $ java -jar target/benchmarks.jar BenchmarkBloomFilterProbe -prof perfasm  -f 1 (Linux)
-s   */
+   *    $ java -jar target/benchmarks.jar BenchmarkBloomFilterProbe -prof perf -jvmArgsAppend "-XX:AllocatePrefetchStyle=2"
+   */
   public static void main(String[] args) throws RunnerException {
     Options opt = new OptionsBuilder()
       .include(BenchmarkBloomFilterProbe.class.getSimpleName())

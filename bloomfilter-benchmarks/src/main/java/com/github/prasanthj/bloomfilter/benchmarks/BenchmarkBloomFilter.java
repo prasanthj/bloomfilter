@@ -48,8 +48,10 @@ import java.util.concurrent.TimeUnit;
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.SECONDS)
 public class BenchmarkBloomFilter {
-  @Param({"10000"})
+  @Param({"1000000"})
   private int numEntries;
+  @Param({"10000"})
+  private int numProbes;
   private BloomFilter bf;
   private Bloom1Filter bf1;
   private int[] inp;
@@ -59,17 +61,15 @@ public class BenchmarkBloomFilter {
   public void setup() {
     bf = new BloomFilter(numEntries);
     bf1 = new Bloom1Filter(numEntries);
-    inp = new int[numEntries];
+    inp = new int[numProbes];
     rand = new Random(123);
     for (int i = 0; i < numEntries; i++) {
-      inp[i] = rand.nextInt(numEntries);
+      int val = rand.nextInt(numEntries);
+      bf.addLong(val);
+      bf1.addLong(val);
     }
-  }
-
-  @Benchmark
-  public void bloomFilterAddLong() {
-    for (int i : inp) {
-      bf.addLong(i);
+    for (int i = 0; i < numProbes; i++) {
+      inp[i] = rand.nextInt(numProbes);
     }
   }
 
@@ -77,13 +77,6 @@ public class BenchmarkBloomFilter {
   public void bloomFilterTestLong() {
     for (int i : inp) {
       bf.testLong(i);
-    }
-  }
-
-  @Benchmark
-  public void bloom1FilterAddLong() {
-    for (int i : inp) {
-      bf1.addLong(i);
     }
   }
 

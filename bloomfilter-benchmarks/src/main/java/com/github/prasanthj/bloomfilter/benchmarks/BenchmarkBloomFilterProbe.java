@@ -12,21 +12,20 @@
  */
 package com.github.prasanthj.bloomfilter.benchmarks;
 
-import com.github.prasanthj.bloomfilter.Bloom1Filter;
-import com.github.prasanthj.bloomfilter.BloomFilter;
+import java.util.concurrent.TimeUnit;
 
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
 import org.openjdk.jmh.annotations.Measurement;
 import org.openjdk.jmh.annotations.Mode;
+import org.openjdk.jmh.annotations.OperationsPerInvocation;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Param;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
-import org.openjdk.jmh.infra.Blackhole;
 import org.openjdk.jmh.profile.LinuxPerfAsmProfiler;
 import org.openjdk.jmh.profile.LinuxPerfNormProfiler;
 import org.openjdk.jmh.profile.LinuxPerfProfiler;
@@ -35,88 +34,70 @@ import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 
-import java.util.Random;
-import java.util.concurrent.TimeUnit;
+import com.github.prasanthj.bloomfilter.BloomFilter;
 
-/**
- *
- */
 @State(Scope.Benchmark)
 @Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
 @Measurement(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
 @Fork(1)
-@BenchmarkMode(Mode.Throughput)
-@OutputTimeUnit(TimeUnit.SECONDS)
-public class BenchmarkBloomFilter {
-
-  @Param({"10000"})
-  private int numEntries;
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.NANOSECONDS)
+public class BenchmarkBloomFilterProbe {
+  @Param({"10000", "10000000"})
+  private int size;
   private BloomFilter bf;
-  private Bloom1Filter bf1;
-  private int[] inp;
-  private Random rand;
 
   @Setup
   public void setup() {
-    bf = new BloomFilter(numEntries);
-    bf1 = new Bloom1Filter(numEntries);
-    inp = new int[numEntries];
-    rand = new Random(123);
-    for (int i = 0; i < numEntries; i++) {
-      inp[i] = rand.nextInt(numEntries);
-    }
-  }
-
-  @Benchmark
-  public void bloomFilterAddLong() {
-    for (int i : inp) {
+    bf = new BloomFilter(size);
+    for (int i = 0; i < size; i++) {
       bf.addLong(i);
     }
   }
 
   @Benchmark
-  public void bloomFilterTestLong() {
-    for (int i : inp) {
+  @OperationsPerInvocation(1)
+  public void testProbe1BloomFilter() {
+    for (int i = 1; i >= 0 ; i--) {
       bf.testLong(i);
     }
   }
 
   @Benchmark
-  public void bloom1FilterAddLong() {
-    for (int i : inp) {
-      bf1.addLong(i);
+  @OperationsPerInvocation(20000)
+  public void testProbe20KBloomFilter() {
+    for (int i = 20000; i >= 0 ; i--) {
+      bf.testLong(i);
     }
   }
 
   @Benchmark
-  public void bloom1FilterTestLong() {
-    for (int i : inp) {
-      bf1.testLong(i);
+  @OperationsPerInvocation(20000000)
+  public void testProbe20MBloomFilter() {
+    for (int i = 20000000; i >= 0 ; i--) {
+      bf.testLong(i);
     }
   }
 
-   /*
+  /*
    * ============================== HOW TO RUN THIS TEST: ====================================
    *
    * You can run this test:
    *
    * a) Via the command line:
    *    $ mvn clean install
-   *    $ java -jar target/benchmarks.jar BenchmarkBloomFilter -prof perf     -f 1 (Linux)
-   *    $ java -jar target/benchmarks.jar BenchmarkBloomFilter -prof perfnorm -f 3 (Linux)
-   *    $ java -jar target/benchmarks.jar BenchmarkBloomFilter -prof perfasm  -f 1 (Linux)
-   *    $ java -jar target/benchmarks.jar BenchmarkBloomFilter -prof gc  -f 1 (allocation counting via gc)
-   */
-
+   *    $ java -jar target/benchmarks.jar BenchmarkBloomFilterProbe -prof perf     -f 1 (Linux)
+   *    $ java -jar target/benchmarks.jar BenchmarkBloomFilterProbe -prof perfnorm -f 3 (Linux)
+   *    $ java -jar target/benchmarks.jar BenchmarkBloomFilterProbe -prof perfasm  -f 1 (Linux)
+s   */
   public static void main(String[] args) throws RunnerException {
-    Options options = new OptionsBuilder()
-      .include(BenchmarkBloomFilter.class.getSimpleName())
+    Options opt = new OptionsBuilder()
+      .include(BenchmarkBloomFilterProbe.class.getSimpleName())
       .addProfiler(LinuxPerfProfiler.class)
       .addProfiler(LinuxPerfNormProfiler.class)
       .addProfiler(LinuxPerfAsmProfiler.class)
-      .forks(1)
       .build();
 
-    new Runner(options).run();
+    new Runner(opt).run();
   }
 }

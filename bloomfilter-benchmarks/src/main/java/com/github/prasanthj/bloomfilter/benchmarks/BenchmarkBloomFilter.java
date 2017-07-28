@@ -27,6 +27,9 @@ import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
 import org.openjdk.jmh.infra.Blackhole;
+import org.openjdk.jmh.profile.LinuxPerfAsmProfiler;
+import org.openjdk.jmh.profile.LinuxPerfNormProfiler;
+import org.openjdk.jmh.profile.LinuxPerfProfiler;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
 import org.openjdk.jmh.runner.options.Options;
@@ -91,9 +94,25 @@ public class BenchmarkBloomFilter {
     }
   }
 
+   /*
+   * ============================== HOW TO RUN THIS TEST: ====================================
+   *
+   * You can run this test:
+   *
+   * a) Via the command line:
+   *    $ mvn clean install
+   *    $ java -jar target/benchmarks.jar BenchmarkBloomFilter -prof perf     -f 1 (Linux)
+   *    $ java -jar target/benchmarks.jar BenchmarkBloomFilter -prof perfnorm -f 3 (Linux)
+   *    $ java -jar target/benchmarks.jar BenchmarkBloomFilter -prof perfasm  -f 1 (Linux)
+   *    $ java -jar target/benchmarks.jar BenchmarkBloomFilter -prof gc  -f 1 (allocation counting via gc)
+   */
+
   public static void main(String[] args) throws RunnerException {
     Options options = new OptionsBuilder()
       .include(BenchmarkBloomFilter.class.getSimpleName())
+      .addProfiler(LinuxPerfProfiler.class)
+      .addProfiler(LinuxPerfNormProfiler.class)
+      .addProfiler(LinuxPerfAsmProfiler.class)
       .forks(1)
       .build();
 

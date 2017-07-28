@@ -38,24 +38,45 @@ import java.util.List;
  */
 public class Bloom1Filter {
   private static final double DEFAULT_FPP = 0.05;
+  private static final int DEFAULT_BLOCKSIZE = 1;
   private BitSet bitSet;
-  private int m;
+  private long m;
   private int k;
   private double fpp;
   private long n;
+  // spread k-1 bits to adjacent longs, default is 2
+  // spreading hash bits within blockSize * longs will make bloom filter L1 cache friendly
+  // blockSize = 1, means all k hash bits will be spread within a long
+  // blockSize = 8 (max value), means all k hash bits will be spread across 8 consecutive longss
+  private int blockSize;
 
   public Bloom1Filter(long maxNumEntries) {
-    this(maxNumEntries, DEFAULT_FPP);
+    this(maxNumEntries, DEFAULT_FPP, DEFAULT_BLOCKSIZE);
+  }
+
+  public Bloom1Filter(long maxNumEntries, int blockSize) {
+    this(maxNumEntries, DEFAULT_FPP, blockSize);
   }
 
   public Bloom1Filter(long maxNumEntries, double fpp) {
+    this(maxNumEntries, fpp, DEFAULT_BLOCKSIZE);
+  }
+
+  public Bloom1Filter(long maxNumEntries, double fpp, int blockSize) {
     assert maxNumEntries > 0 : "maxNumEntries should be > 0";
     assert fpp > 0.0 && fpp < 1.0 : "False positive percentage should be > 0.0 & < 1.0";
+    assert blockSize > 0 && blockSize <= 8 : "blockSize should be > 0 and <= 8";
     this.fpp = fpp;
     this.n = maxNumEntries;
     this.m = optimalNumOfBits(maxNumEntries, fpp);
     this.k = optimalNumOfHashFunctions(maxNumEntries, m);
+    int nLongs = (int) Math.ceil((double) m / (double) Long.SIZE);
+    this.blockSize = blockSize;
+    // additional bits to pad long array to block size
+    int lastBlockLongs = nLongs % blockSize;
+    this.m = lastBlockLongs == 0 ? m : m + ((blockSize - lastBlockLongs) * Long.SIZE);
     this.bitSet = new BitSet(m);
+    assert (bitSet.data.length % blockSize) == 0 : "bitSet has to be block aligned";
   }
 
   // deserialize bloomfilter. see serialize() for the format.
@@ -73,11 +94,11 @@ public class Bloom1Filter {
     return Math.max(1, (int) Math.round((double) m / n * Math.log(2)));
   }
 
-  static int optimalNumOfBits(long n, double p) {
+  static long optimalNumOfBits(long n, double p) {
     if (p == 0) {
       p = Double.MIN_VALUE;
     }
-    return (int) (-n * Math.log(p) / (Math.log(2) * Math.log(2)));
+    return (long) (-n * Math.log(p) / (Math.log(2) * Math.log(2)));
   }
 
   public long sizeInBytes() {
@@ -107,19 +128,17 @@ public class Bloom1Filter {
 
     int wordIdx = firstHash % bitSet.data.length;
     long word = bitSet.data[wordIdx];
-    // set MSB of the word for first hash bit
-    word |= (1L << (Long.SIZE - 1));
-
-    for (int i = 2; i <= k; i++) {
+    long mask = 0L;
+    for (int i = 1; i <= k; i++) {
       int combinedHash = hash1 + (i * hash2);
       // hashcode should be positive, flip all the bits if it's negative
       if (combinedHash < 0) {
         combinedHash = ~combinedHash;
       }
       int pos = combinedHash & (Long.SIZE - 1);
-      word |= (1L << pos);
+      mask |= (1L << pos);
     }
-    bitSet.getData()[wordIdx] = word;
+    bitSet.getData()[wordIdx] = word | mask;
   }
 
   public void addString(String val) {
@@ -165,23 +184,18 @@ public class Bloom1Filter {
     }
     int wordIdx = firstHash % bitSet.data.length;
     long word = bitSet.data[wordIdx];
-    // check MSB of the word for first hash bit
-    if ((word & (1L << (Long.SIZE - 1))) == 0) {
-      return false;
-    }
-
-    for (int i = 2; i <= k; i++) {
+    long mask = 0L;
+    for (int i = 1; i <= k; i++) {
       int combinedHash = hash1 + (i * hash2);
       // hashcode should be positive, flip all the bits if it's negative
       if (combinedHash < 0) {
         combinedHash = ~combinedHash;
       }
       int pos = combinedHash & (Long.SIZE - 1);
-      if ((word & (1L << pos)) == 0) {
-        return false;
-      }
+      mask |= (1L << pos);
     }
-    return true;
+
+    return (word & mask) == mask;
   }
 
   public boolean testString(String val) {
@@ -226,7 +240,7 @@ public class Bloom1Filter {
         (byte) (val >> 56),};
   }
 
-  public int getBitSize() {
+  public long getBitSize() {
     return m;
   }
 

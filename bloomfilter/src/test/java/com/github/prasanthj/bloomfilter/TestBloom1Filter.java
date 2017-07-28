@@ -15,6 +15,7 @@ package com.github.prasanthj.bloomfilter; /**
  */
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
 
@@ -454,6 +455,35 @@ public class TestBloom1Filter {
   }
 
   @Test
+  public void testFpp1K() {
+    int size = 1000;
+    Bloom1Filter bf = new Bloom1Filter(size);
+    int fp = 0;
+    for (int i = 0; i < size; i++) {
+      bf.addLong(i);
+    }
+
+    Random random = new Random();
+    for (int i = 0; i < size; i++) {
+      int probe = random.nextInt();
+      // out of range probes
+      if ((probe > size) || (probe < 0)) {
+        if (bf.testLong(probe)) {
+          fp++;
+        }
+      }
+    }
+
+    double actualFpp = (double) fp / (double) size;
+    double expectedFpp = bf.getFalsePositivePercent();
+    if (actualFpp < expectedFpp) {
+      assertTrue(actualFpp != 0.0);
+    } else {
+      assertEquals(expectedFpp, actualFpp, 0.005);
+    }
+  }
+
+  @Test
   public void testFpp10K() {
     int size = 10_000;
     Bloom1Filter bf = new Bloom1Filter(size);
@@ -474,7 +504,12 @@ public class TestBloom1Filter {
     }
 
     double actualFpp = (double) fp / (double) size;
-    assertEquals(0.05, actualFpp, 0.005);
+    double expectedFpp = bf.getFalsePositivePercent();
+    if (actualFpp < expectedFpp) {
+      assertTrue(actualFpp != 0.0);
+    } else {
+      assertEquals(expectedFpp, actualFpp, 0.005);
+    }
   }
 
   @Test
@@ -498,7 +533,12 @@ public class TestBloom1Filter {
     }
 
     double actualFpp = (double) fp / (double) size;
-    assertEquals(0.05, actualFpp, 0.005);
+    double expectedFpp = bf.getFalsePositivePercent();
+    if (actualFpp < expectedFpp) {
+      assertTrue(actualFpp != 0.0);
+    } else {
+      assertEquals(expectedFpp, actualFpp, 0.005);
+    }
   }
 
   @Test
@@ -522,6 +562,40 @@ public class TestBloom1Filter {
     }
 
     double actualFpp = (double) fp / (double) size;
-    assertEquals(0.05, actualFpp, 0.005);
+    double expectedFpp = bf.getFalsePositivePercent();
+    if (actualFpp < expectedFpp) {
+      assertTrue(actualFpp != 0.0);
+    } else {
+      assertEquals(expectedFpp, actualFpp, 0.005);
+    }
+  }
+
+  @Test
+  public void testFpp100M() {
+    int size = 100_000_000;
+    Bloom1Filter bf = new Bloom1Filter(size);
+    int fp = 0;
+    for (int i = 0; i < size; i++) {
+      bf.addLong(i);
+    }
+
+    Random random = new Random();
+    for (int i = 0; i < size; i++) {
+      int probe = random.nextInt();
+      // out of range probes
+      if ((probe > size) || (probe < 0)) {
+        if (bf.testLong(probe)) {
+          fp++;
+        }
+      }
+    }
+
+    double actualFpp = (double) fp / (double) size;
+    double expectedFpp = bf.getFalsePositivePercent();
+    if (actualFpp < expectedFpp) {
+      assertTrue(actualFpp != 0.0);
+    } else {
+      assertEquals(expectedFpp, actualFpp, 0.005);
+    }
   }
 }

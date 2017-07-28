@@ -1,0 +1,210 @@
+# JMH version: 1.19
+# VM version: JDK 1.8.0_131, VM 25.131-b12
+# VM invoker: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-3.b12.el7_3.x86_64/jre/bin/java
+# VM options: <none>
+# Warmup: 5 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe.testProbe1Bloom1Filter
+# Parameters: (size = 10000000)
+
+# Run progress: 0.00% complete, ETA 00:00:30
+# Fork: 1 of 1
+# Preparing profilers: LinuxPerfProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 122.183 ns/op
+# Warmup Iteration   2: 100.853 ns/op
+# Warmup Iteration   3: 83.501 ns/op
+# Warmup Iteration   4: 83.235 ns/op
+# Warmup Iteration   5: 95.347 ns/op
+Iteration   1: 94.038 ns/op
+Iteration   2: 90.048 ns/op
+Iteration   3: 89.863 ns/op
+Iteration   4: 83.692 ns/op
+Iteration   5: 84.139 ns/op
+# Processing profiler results: LinuxPerfProfiler 
+
+
+Result "com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe.testProbe1Bloom1Filter":
+  88.356 ±(99.9%) 16.890 ns/op [Average]
+  (min, avg, max) = (83.692, 88.356, 94.038), stdev = 4.386
+  CI (99.9%): [71.466, 105.246] (assumes normal distribution)
+
+Secondary result "com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe.testProbe1Bloom1Filter:·perf":
+Perf stats:
+--------------------------------------------------
+
+       6190.742834      task-clock (msec)         #    0.531 CPUs utilized          
+               935      context-switches          #    0.151 K/sec                  
+               125      cpu-migrations            #    0.020 K/sec                  
+           158,745      page-faults               #    0.026 M/sec                  
+    11,630,270,592      cycles                    #    1.879 GHz                      (27.15%)
+     3,212,715,193      stalled-cycles-frontend   #   27.62% frontend cycles idle     (27.61%)
+   <not supported>      stalled-cycles-backend   
+    30,115,665,873      instructions              #    2.59  insns per cycle        
+                                                  #    0.11  stalled cycles per insn  (34.55%)
+     4,419,833,183      branches                  #  713.942 M/sec                    (34.86%)
+         2,038,034      branch-misses             #    0.05% of all branches          (35.28%)
+     4,532,431,357      L1-dcache-loads           #  732.130 M/sec                    (26.23%)
+        48,469,651      L1-dcache-load-misses     #    1.07% of all L1-dcache hits    (14.86%)
+         9,033,153      LLC-loads                 #    1.459 M/sec                    (14.73%)
+         6,434,850      LLC-load-misses           #   71.24% of all LL-cache hits     (21.80%)
+   <not supported>      L1-icache-loads          
+         3,128,458      L1-icache-load-misses     #    0.505 M/sec                    (28.82%)
+     4,269,468,351      dTLB-loads                #  689.654 M/sec                    (27.65%)
+        18,145,501      dTLB-load-misses          #    0.43% of all dTLB cache hits   (14.57%)
+            24,228      iTLB-loads                #    0.004 M/sec                    (14.66%)
+            34,473      iTLB-load-misses          #  142.29% of all iTLB cache hits   (21.73%)
+   <not supported>      L1-dcache-prefetches     
+        41,267,765      L1-dcache-prefetch-misses #    6.666 M/sec                    (28.84%)
+
+      11.668669350 seconds time elapsed
+
+
+
+# JMH version: 1.19
+# VM version: JDK 1.8.0_131, VM 25.131-b12
+# VM invoker: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-3.b12.el7_3.x86_64/jre/bin/java
+# VM options: <none>
+# Warmup: 5 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe.testProbe20KBloom1Filter
+# Parameters: (size = 10000000)
+
+# Run progress: 33.33% complete, ETA 00:00:23
+# Fork: 1 of 1
+# Preparing profilers: LinuxPerfProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 94.258 ns/op
+# Warmup Iteration   2: 103.088 ns/op
+# Warmup Iteration   3: 96.264 ns/op
+# Warmup Iteration   4: 66.480 ns/op
+# Warmup Iteration   5: 67.924 ns/op
+Iteration   1: 69.607 ns/op
+Iteration   2: 79.052 ns/op
+Iteration   3: 74.793 ns/op
+Iteration   4: 67.500 ns/op
+Iteration   5: 67.919 ns/op
+# Processing profiler results: LinuxPerfProfiler 
+
+
+Result "com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe.testProbe20KBloom1Filter":
+  71.774 ±(99.9%) 19.243 ns/op [Average]
+  (min, avg, max) = (67.500, 71.774, 79.052), stdev = 4.997
+  CI (99.9%): [52.531, 91.017] (assumes normal distribution)
+
+Secondary result "com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe.testProbe20KBloom1Filter:·perf":
+Perf stats:
+--------------------------------------------------
+
+       6151.566470      task-clock (msec)         #    0.528 CPUs utilized          
+               750      context-switches          #    0.122 K/sec                  
+               508      cpu-migrations            #    0.083 K/sec                  
+           141,707      page-faults               #    0.023 M/sec                  
+    11,645,467,976      cycles                    #    1.893 GHz                      (27.15%)
+     4,928,875,984      stalled-cycles-frontend   #   42.32% frontend cycles idle     (27.51%)
+   <not supported>      stalled-cycles-backend   
+    18,642,330,221      instructions              #    1.60  insns per cycle        
+                                                  #    0.26  stalled cycles per insn  (34.40%)
+     2,705,588,847      branches                  #  439.821 M/sec                    (34.87%)
+       112,978,567      branch-misses             #    4.18% of all branches          (35.25%)
+     2,599,827,700      L1-dcache-loads           #  422.629 M/sec                    (26.14%)
+       139,341,720      L1-dcache-load-misses     #    5.36% of all L1-dcache hits    (14.10%)
+        92,595,477      LLC-loads                 #   15.052 M/sec                    (14.24%)
+        17,892,355      LLC-load-misses           #   19.32% of all LL-cache hits     (21.39%)
+   <not supported>      L1-icache-loads          
+         2,128,587      L1-icache-load-misses     #    0.346 M/sec                    (28.59%)
+     2,423,483,251      dTLB-loads                #  393.962 M/sec                    (27.68%)
+        70,065,476      dTLB-load-misses          #    2.89% of all dTLB cache hits   (14.42%)
+            26,773      iTLB-loads                #    0.004 M/sec                    (14.57%)
+           174,795      iTLB-load-misses          #  652.88% of all iTLB cache hits   (21.65%)
+   <not supported>      L1-dcache-prefetches     
+        26,944,536      L1-dcache-prefetch-misses #    4.380 M/sec                    (28.70%)
+
+      11.655440134 seconds time elapsed
+
+
+
+# JMH version: 1.19
+# VM version: JDK 1.8.0_131, VM 25.131-b12
+# VM invoker: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-3.b12.el7_3.x86_64/jre/bin/java
+# VM options: <none>
+# Warmup: 5 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Average time, time/op
+# Benchmark: com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe.testProbe20MBloom1Filter
+# Parameters: (size = 10000000)
+
+# Run progress: 66.67% complete, ETA 00:00:11
+# Fork: 1 of 1
+# Preparing profilers: LinuxPerfProfiler 
+# Profilers consume stderr from target VM, use -v EXTRA to copy to console
+# Warmup Iteration   1: 104.966 ns/op
+# Warmup Iteration   2: 91.400 ns/op
+# Warmup Iteration   3: 78.083 ns/op
+# Warmup Iteration   4: 85.744 ns/op
+# Warmup Iteration   5: 76.334 ns/op
+Iteration   1: 74.182 ns/op
+Iteration   2: 77.449 ns/op
+Iteration   3: 80.855 ns/op
+Iteration   4: 83.138 ns/op
+Iteration   5: 73.568 ns/op
+# Processing profiler results: LinuxPerfProfiler 
+
+
+Result "com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe.testProbe20MBloom1Filter":
+  77.838 ±(99.9%) 15.986 ns/op [Average]
+  (min, avg, max) = (73.568, 77.838, 83.138), stdev = 4.152
+  CI (99.9%): [61.852, 93.825] (assumes normal distribution)
+
+Secondary result "com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloom1FilterProbe.testProbe20MBloom1Filter:·perf":
+Perf stats:
+--------------------------------------------------
+
+      12959.422083      task-clock (msec)         #    0.714 CPUs utilized          
+             1,546      context-switches          #    0.119 K/sec                  
+               413      cpu-migrations            #    0.032 K/sec                  
+           269,646      page-faults               #    0.021 M/sec                  
+    24,962,095,902      cycles                    #    1.926 GHz                      (26.89%)
+    11,577,755,333      stalled-cycles-frontend   #   46.38% frontend cycles idle     (27.14%)
+   <not supported>      stalled-cycles-backend   
+    34,428,397,556      instructions              #    1.38  insns per cycle        
+                                                  #    0.34  stalled cycles per insn  (33.91%)
+     4,409,282,720      branches                  #  340.238 M/sec                    (34.00%)
+       222,922,022      branch-misses             #    5.06% of all branches          (34.08%)
+     4,872,940,143      L1-dcache-loads           #  376.015 M/sec                    (26.25%)
+       273,902,102      L1-dcache-load-misses     #    5.62% of all L1-dcache hits    (13.95%)
+       183,141,568      LLC-loads                 #   14.132 M/sec                    (14.01%)
+        42,976,064      LLC-load-misses           #   23.47% of all LL-cache hits     (20.83%)
+   <not supported>      L1-icache-loads          
+         5,358,542      L1-icache-load-misses     #    0.413 M/sec                    (27.63%)
+     4,740,740,133      dTLB-loads                #  365.814 M/sec                    (26.80%)
+       142,535,500      dTLB-load-misses          #    3.01% of all dTLB cache hits   (13.86%)
+            49,917      iTLB-loads                #    0.004 M/sec                    (13.87%)
+           108,941      iTLB-load-misses          #  218.24% of all iTLB cache hits   (20.76%)
+   <not supported>      L1-dcache-prefetches     
+        54,314,896      L1-dcache-prefetch-misses #    4.191 M/sec                    (27.58%)
+
+      18.142149631 seconds time elapsed
+
+
+
+# Run complete. Total time: 00:00:41
+
+Benchmark                                                    (size)  Mode  Cnt   Score    Error  Units
+BenchmarkBloom1FilterProbe.testProbe1Bloom1Filter          10000000  avgt    5  88.356 ± 16.890  ns/op
+BenchmarkBloom1FilterProbe.testProbe1Bloom1Filter:·cpi     10000000  avgt        0.386             CPI
+BenchmarkBloom1FilterProbe.testProbe1Bloom1Filter:·perf    10000000  avgt          NaN             ---
+BenchmarkBloom1FilterProbe.testProbe20KBloom1Filter        10000000  avgt    5  71.774 ± 19.243  ns/op
+BenchmarkBloom1FilterProbe.testProbe20KBloom1Filter:·cpi   10000000  avgt        0.625             CPI
+BenchmarkBloom1FilterProbe.testProbe20KBloom1Filter:·perf  10000000  avgt          NaN             ---
+BenchmarkBloom1FilterProbe.testProbe20MBloom1Filter        10000000  avgt    5  77.838 ± 15.986  ns/op
+BenchmarkBloom1FilterProbe.testProbe20MBloom1Filter:·cpi   10000000  avgt        0.725             CPI
+BenchmarkBloom1FilterProbe.testProbe20MBloom1Filter:·perf  10000000  avgt          NaN             ---

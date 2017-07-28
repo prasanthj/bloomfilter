@@ -566,33 +566,4 @@ public class TestBloomFilter {
       assertEquals(expectedFpp, actualFpp, 0.005);
     }
   }
-
-  @Test
-  public void testFpp100M() {
-    int size = 100_000_000;
-    BloomFilter bf = new BloomFilter(size);
-    int fp = 0;
-    for (int i = 0; i < size; i++) {
-      bf.addLong(i);
-    }
-
-    Random random = new Random();
-    for (int i = 0; i < size; i++) {
-      int probe = random.nextInt();
-      // out of range probes
-      if ((probe > size) || (probe < 0)) {
-        if (bf.testLong(probe)) {
-          fp++;
-        }
-      }
-    }
-
-    double actualFpp = (double) fp / (double) size;
-    double expectedFpp = bf.getFalsePositivePercent();
-    if (actualFpp < expectedFpp) {
-      assertTrue(actualFpp != 0.0);
-    } else {
-      assertEquals(expectedFpp, actualFpp, 0.005);
-    }
-  }
 }

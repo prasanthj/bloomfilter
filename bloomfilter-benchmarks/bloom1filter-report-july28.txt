@@ -1,0 +1,135 @@
+# JMH version: 1.19
+# VM version: JDK 1.8.0_121, VM 25.121-b13
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/bin/java
+# VM options: <none>
+# Warmup: 5 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilter.bloom1FilterAddLong
+# Parameters: (numEntries = 10000)
+
+# Run progress: 0.00% complete, ETA 00:00:40
+# Fork: 1 of 1
+# Warmup Iteration   1: 2783.752 ops/s
+# Warmup Iteration   2: 3046.648 ops/s
+# Warmup Iteration   3: 3043.105 ops/s
+# Warmup Iteration   4: 2988.219 ops/s
+# Warmup Iteration   5: 3012.304 ops/s
+Iteration   1: 2991.348 ops/s
+Iteration   2: 3003.639 ops/s
+Iteration   3: 2987.061 ops/s
+Iteration   4: 2935.463 ops/s
+Iteration   5: 3019.768 ops/s
+
+
+Result "com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilter.bloom1FilterAddLong":
+  2987.456 ±(99.9%) 122.140 ops/s [Average]
+  (min, avg, max) = (2935.463, 2987.456, 3019.768), stdev = 31.719
+  CI (99.9%): [2865.315, 3109.596] (assumes normal distribution)
+
+
+# JMH version: 1.19
+# VM version: JDK 1.8.0_121, VM 25.121-b13
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/bin/java
+# VM options: <none>
+# Warmup: 5 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilter.bloom1FilterTestLong
+# Parameters: (numEntries = 10000)
+
+# Run progress: 25.00% complete, ETA 00:00:31
+# Fork: 1 of 1
+# Warmup Iteration   1: 3513.427 ops/s
+# Warmup Iteration   2: 3558.251 ops/s
+# Warmup Iteration   3: 4203.178 ops/s
+# Warmup Iteration   4: 4194.692 ops/s
+# Warmup Iteration   5: 4188.041 ops/s
+Iteration   1: 4109.345 ops/s
+Iteration   2: 4256.605 ops/s
+Iteration   3: 4099.778 ops/s
+Iteration   4: 4212.247 ops/s
+Iteration   5: 4233.725 ops/s
+
+
+Result "com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilter.bloom1FilterTestLong":
+  4182.340 ±(99.9%) 280.297 ops/s [Average]
+  (min, avg, max) = (4099.778, 4182.340, 4256.605), stdev = 72.792
+  CI (99.9%): [3902.043, 4462.637] (assumes normal distribution)
+
+
+# JMH version: 1.19
+# VM version: JDK 1.8.0_121, VM 25.121-b13
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/bin/java
+# VM options: <none>
+# Warmup: 5 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilter.bloomFilterAddLong
+# Parameters: (numEntries = 10000)
+
+# Run progress: 50.00% complete, ETA 00:00:20
+# Fork: 1 of 1
+# Warmup Iteration   1: 2849.926 ops/s
+# Warmup Iteration   2: 2960.891 ops/s
+# Warmup Iteration   3: 3003.240 ops/s
+# Warmup Iteration   4: 2989.258 ops/s
+# Warmup Iteration   5: 2950.571 ops/s
+Iteration   1: 3008.386 ops/s
+Iteration   2: 2979.632 ops/s
+Iteration   3: 2954.506 ops/s
+Iteration   4: 2803.280 ops/s
+Iteration   5: 2898.208 ops/s
+
+
+Result "com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilter.bloomFilterAddLong":
+  2928.802 ±(99.9%) 312.055 ops/s [Average]
+  (min, avg, max) = (2803.280, 2928.802, 3008.386), stdev = 81.040
+  CI (99.9%): [2616.747, 3240.857] (assumes normal distribution)
+
+
+# JMH version: 1.19
+# VM version: JDK 1.8.0_121, VM 25.121-b13
+# VM invoker: /Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/bin/java
+# VM options: <none>
+# Warmup: 5 iterations, 1 s each
+# Measurement: 5 iterations, 1 s each
+# Timeout: 10 min per iteration
+# Threads: 1 thread, will synchronize iterations
+# Benchmark mode: Throughput, ops/time
+# Benchmark: com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilter.bloomFilterTestLong
+# Parameters: (numEntries = 10000)
+
+# Run progress: 75.00% complete, ETA 00:00:10
+# Fork: 1 of 1
+# Warmup Iteration   1: 4481.397 ops/s
+# Warmup Iteration   2: 4158.174 ops/s
+# Warmup Iteration   3: 5252.673 ops/s
+# Warmup Iteration   4: 5320.526 ops/s
+# Warmup Iteration   5: 5390.759 ops/s
+Iteration   1: 5287.527 ops/s
+Iteration   2: 5305.344 ops/s
+Iteration   3: 5341.573 ops/s
+Iteration   4: 5258.015 ops/s
+Iteration   5: 5205.629 ops/s
+
+
+Result "com.github.prasanthj.bloomfilter.benchmarks.BenchmarkBloomFilter.bloomFilterTestLong":
+  5279.617 ±(99.9%) 197.322 ops/s [Average]
+  (min, avg, max) = (5205.629, 5279.617, 5341.573), stdev = 51.244
+  CI (99.9%): [5082.295, 5476.940] (assumes normal distribution)
+
+
+# Run complete. Total time: 00:00:41
+
+Benchmark                                  (numEntries)   Mode  Cnt     Score     Error  Units
+BenchmarkBloomFilter.bloom1FilterAddLong          10000  thrpt    5  2987.456 ± 122.140  ops/s
+BenchmarkBloomFilter.bloom1FilterTestLong         10000  thrpt    5  4182.340 ± 280.297  ops/s
+BenchmarkBloomFilter.bloomFilterAddLong           10000  thrpt    5  2928.802 ± 312.055  ops/s
+BenchmarkBloomFilter.bloomFilterTestLong          10000  thrpt    5  5279.617 ± 197.322  ops/s

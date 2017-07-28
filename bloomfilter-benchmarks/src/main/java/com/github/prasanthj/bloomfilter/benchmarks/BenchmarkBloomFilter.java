@@ -12,6 +12,7 @@
  */
 package com.github.prasanthj.bloomfilter.benchmarks;
 
+import com.github.prasanthj.bloomfilter.Bloom1Filter;
 import com.github.prasanthj.bloomfilter.BloomFilter;
 
 import org.openjdk.jmh.annotations.Benchmark;
@@ -46,13 +47,15 @@ import java.util.concurrent.TimeUnit;
 public class BenchmarkBloomFilter {
   @Param({"10000"})
   private int numEntries;
-  private BloomFilter bf1;
+  private BloomFilter bf;
+  private Bloom1Filter bf1;
   private int[] inp;
   private Random rand;
 
   @Setup
   public void setup() {
-    bf1 = new BloomFilter(numEntries);
+    bf = new BloomFilter(numEntries);
+    bf1 = new Bloom1Filter(numEntries);
     inp = new int[numEntries];
     rand = new Random(123);
     for (int i = 0; i < numEntries; i++) {
@@ -61,14 +64,28 @@ public class BenchmarkBloomFilter {
   }
 
   @Benchmark
-  public void addLong() {
+  public void bloomFilterAddLong() {
+    for (int i : inp) {
+      bf.addLong(i);
+    }
+  }
+
+  @Benchmark
+  public void bloomFilterTestLong() {
+    for (int i : inp) {
+      bf.testLong(i);
+    }
+  }
+
+  @Benchmark
+  public void bloom1FilterAddLong() {
     for (int i : inp) {
       bf1.addLong(i);
     }
   }
 
   @Benchmark
-  public void testLong() {
+  public void bloom1FilterTestLong() {
     for (int i : inp) {
       bf1.testLong(i);
     }

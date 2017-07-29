@@ -28,6 +28,6 @@ Bug fixes or improvements are welcome! Please fork the project and send pull req
 License
 -------
 
-Apache licensed.
+Apache 2.0 licensed.
 
 [here]:https://github.com/prasanthj/hasher

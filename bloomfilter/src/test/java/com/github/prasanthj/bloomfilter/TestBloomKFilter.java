@@ -1,4 +1,4 @@
-package com.github.prasanthj.bloomfilter; /**
+/**
  *   Copyright 2014 Prasanth Jayachandran
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +13,7 @@ package com.github.prasanthj.bloomfilter; /**
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.github.prasanthj.bloomfilter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

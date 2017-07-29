@@ -1,4 +1,4 @@
-BloomFilter
+BloomFilter [![Build Status](https://travis-ci.org/prasanthj/bloomfilter.svg?branch=master)](https://travis-ci.org/prasanthj/bloomfilter/branches)
 ===========
 
 BloomFilters are probabilistic data structures for set membership check. BloomFilters are

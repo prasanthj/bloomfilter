@@ -15,6 +15,14 @@ increase accordingly.
 Internally, this implementation of bloom filter uses Murmur3 (from [here]) fast non-cryptographic hash
 algorithm.
 
+Variants
+--------
+This repo has following implementations of bloom filters
+- Standard - Standard bloom filter implementation (https://www.cs.uchicago.edu/~matei/PAPERS/bf.doc)
+- Bloom 1 - One memory access bloom filter (https://www.cise.ufl.edu/~tali/1569342377.pdf)
+- Bloom K - Hashbits spread across adjacent locations in bitset
+- DynamicBloom - Dynamically expanding bloom filter (http://www.cse.fau.edu/~jie/research/publications/Publication_files/infocom2006.pdf)
+
 There are many excellent references for bloom filters. Some of them are
 - http://billmill.org/bloomfilter-tutorial/
 - http://www.jasondavies.com/bloomfilter/

@@ -37,7 +37,7 @@ import java.util.List;
  * https://code.google.com/p/smhasher/wiki/MurmurHash2Flaw
  */
 public class BloomFilter {
-  private static final double DEFAULT_FPP = 0.05;
+  public static final double DEFAULT_FPP = 0.05;
   private BitSet bitSet;
   private int m;
   private int k;

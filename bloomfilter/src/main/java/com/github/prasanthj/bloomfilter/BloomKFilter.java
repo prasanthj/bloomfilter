@@ -36,32 +36,57 @@ import java.util.List;
  * collisions for specific sequence of repeating bytes. Check the following link for more info
  * https://code.google.com/p/smhasher/wiki/MurmurHash2Flaw
  */
-public class Bloom1Filter {
+public class BloomKFilter {
   private static byte[] BYTE_ARRAY_4 = new byte[4];
   private static byte[] BYTE_ARRAY_8 = new byte[8];
   private static final double DEFAULT_FPP = 0.05;
+  private static final int DEFAULT_BLOCKSIZE = 8;
   private BitSet bitSet;
   private long m;
   private int k;
   private double fpp;
   private long n;
+  // spread k-1 bits to adjacent longs, default is 2
+  // spreading hash bits within blockSize * longs will make bloom filter L1 cache friendly
+  // blockSize = 1, means all k hash bits will be spread within a long
+  // blockSize = 8 (max value), means all k hash bits will be spread across 8 consecutive longs
+  private int totalBlockCount;
+  private int bitsPerBlock;
+  private int blockSize;
 
-  public Bloom1Filter(long maxNumEntries) {
-    this(maxNumEntries, DEFAULT_FPP);
+  public BloomKFilter(long maxNumEntries) {
+    this(maxNumEntries, DEFAULT_FPP, DEFAULT_BLOCKSIZE);
   }
 
-  public Bloom1Filter(long maxNumEntries, double fpp) {
+  public BloomKFilter(long maxNumEntries, int blockSize) {
+    this(maxNumEntries, DEFAULT_FPP, blockSize);
+  }
+
+  public BloomKFilter(long maxNumEntries, double fpp) {
+    this(maxNumEntries, fpp, DEFAULT_BLOCKSIZE);
+  }
+
+  public BloomKFilter(long maxNumEntries, double fpp, int blockSize) {
     assert maxNumEntries > 0 : "maxNumEntries should be > 0";
     assert fpp > 0.0 && fpp < 1.0 : "False positive percentage should be > 0.0 & < 1.0";
+    assert blockSize > 0 && blockSize <= 8 : "blockSize should be > 0 and <= 8";
     this.fpp = fpp;
     this.n = maxNumEntries;
     this.m = optimalNumOfBits(maxNumEntries, fpp);
     this.k = optimalNumOfHashFunctions(maxNumEntries, m);
+    int nLongs = (int) Math.ceil((double) m / (double) Long.SIZE);
+    this.blockSize = blockSize;
+    // additional bits to pad long array to block size
+    int lastBlockLongs = nLongs % blockSize;
+    this.m = lastBlockLongs == 0 ? m : m + ((blockSize - lastBlockLongs) * Long.SIZE);
     this.bitSet = new BitSet(m);
+    assert (bitSet.data.length % blockSize) == 0 : "bitSet has to be block aligned";
+    this.totalBlockCount = bitSet.data.length / blockSize;
+    this.bitsPerBlock = blockSize * Long.SIZE;
   }
 
   // deserialize bloomfilter. see serialize() for the format.
-  public Bloom1Filter(List<Long> serializedBloom) {
+  public BloomKFilter(List<Long> serializedBloom) {
     this(serializedBloom.get(0), Double.longBitsToDouble(serializedBloom.get(1)));
     List<Long> bitSet = serializedBloom.subList(2, serializedBloom.size());
     long[] data = new long[bitSet.size()];
@@ -107,19 +132,23 @@ public class Bloom1Filter {
       firstHash = ~firstHash;
     }
 
-    int wordIdx = firstHash % bitSet.data.length;
-    long word = bitSet.data[wordIdx];
-    long mask = (1L << Long.SIZE - 1);
-    for (int i = 2; i <= k; i++) {
-      int combinedHash = hash1 + (i * hash2);
+    // first hash is used to locate block
+    // subsequent K hashes are used to generate K bits within a block of words
+    int blockIdx = firstHash % totalBlockCount;
+    int blockBaseOffset = blockIdx * blockSize;
+    for (int i = 1; i <= k; i++) {
+      int combinedHash = hash1 + ((i + 1) * hash2);
       // hashcode should be positive, flip all the bits if it's negative
       if (combinedHash < 0) {
         combinedHash = ~combinedHash;
       }
-      int pos = combinedHash & (Long.SIZE - 1);
-      mask |= (1L << pos);
+      int pos = combinedHash & (bitsPerBlock - 1);
+      int blockOffset = pos >>> 6;
+      int blockAbsOffset = blockBaseOffset + blockOffset;
+      int wordIdx = pos - (blockOffset << 6);
+      long word = bitSet.data[blockAbsOffset];
+      bitSet.data[blockAbsOffset] = word | (1L << wordIdx);
     }
-    bitSet.getData()[wordIdx] = word | mask;
   }
 
   public void addString(String val) {
@@ -163,20 +192,28 @@ public class Bloom1Filter {
     if (firstHash < 0) {
       firstHash = ~firstHash;
     }
-    int wordIdx = firstHash % bitSet.data.length;
-    long word = bitSet.data[wordIdx];
-    long mask = (1L << Long.SIZE - 1);
-    for (int i = 2; i <= k; i++) {
-      int combinedHash = hash1 + (i * hash2);
+
+    // first hash is used to locate block
+    // subsequent K hashes are used to generate K bits within a block of words
+    int blockIdx = firstHash % totalBlockCount;
+    int blockBaseOffset = blockIdx * blockSize;
+    for (int i = 1; i <= k; i++) {
+      int combinedHash = hash1 + ((i + 1) * hash2);
       // hashcode should be positive, flip all the bits if it's negative
       if (combinedHash < 0) {
         combinedHash = ~combinedHash;
       }
-      int pos = combinedHash & (Long.SIZE - 1);
-      mask |= (1L << pos);
+      int pos = combinedHash & (bitsPerBlock - 1);
+      int blockOffset = pos >>> 6;
+      int blockAbsOffset = blockBaseOffset + blockOffset;
+      int wordIdx = pos - (blockOffset << 6);
+      long word = bitSet.data[blockAbsOffset];
+      if ((word & (1L << wordIdx)) == 0L) {
+        return false;
+      }
     }
 
-    return (word & mask) == mask;
+    return true;
   }
 
   public boolean testString(String val) {
@@ -261,7 +298,7 @@ public class Bloom1Filter {
    * @param that - bloom filter to check compatibility
    * @return true if compatible false otherwise
    */
-  public boolean isCompatible(Bloom1Filter that) {
+  public boolean isCompatible(BloomKFilter that) {
     return this != that &&
         this.getBitSize() == that.getBitSize() &&
         this.getNumHashFunctions() == that.getNumHashFunctions();
@@ -273,7 +310,7 @@ public class Bloom1Filter {
    *
    * @param that - bloom filter to merge
    */
-  public void merge(Bloom1Filter that) {
+  public void merge(BloomKFilter that) {
     this.bitSet.putAll(that.bitSet);
   }
 

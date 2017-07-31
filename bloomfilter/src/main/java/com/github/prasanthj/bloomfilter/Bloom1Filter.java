@@ -37,8 +37,8 @@ import java.util.List;
  * https://code.google.com/p/smhasher/wiki/MurmurHash2Flaw
  */
 public class Bloom1Filter {
-  private static byte[] BYTE_ARRAY_4 = new byte[4];
-  private static byte[] BYTE_ARRAY_8 = new byte[8];
+  private byte[] BYTE_ARRAY_4 = new byte[4];
+  private byte[] BYTE_ARRAY_8 = new byte[8];
   private static final double DEFAULT_FPP = 0.05;
   private BitSet bitSet;
   private long m;
@@ -203,7 +203,7 @@ public class Bloom1Filter {
     return testLong(Double.doubleToLongBits(val));
   }
 
-  private static byte[] intToByteArrayLE(int val) {
+  private byte[] intToByteArrayLE(int val) {
     BYTE_ARRAY_4[0] = (byte) (val >> 0);
     BYTE_ARRAY_4[1] = (byte) (val >> 8);
     BYTE_ARRAY_4[2] = (byte) (val >> 16);
@@ -211,7 +211,7 @@ public class Bloom1Filter {
     return BYTE_ARRAY_4;
   }
 
-  private static byte[] longToByteArrayLE(long val) {
+  private byte[] longToByteArrayLE(long val) {
     BYTE_ARRAY_8[0] = (byte) (val >> 0);
     BYTE_ARRAY_8[1] = (byte) (val >> 8);
     BYTE_ARRAY_8[2] = (byte) (val >> 16);

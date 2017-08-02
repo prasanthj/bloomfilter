@@ -40,49 +40,38 @@ public class BloomKFilter {
   private byte[] BYTE_ARRAY_4 = new byte[4];
   private byte[] BYTE_ARRAY_8 = new byte[8];
   private static final double DEFAULT_FPP = 0.05;
-  private static final int DEFAULT_BLOCKSIZE = 8;
+  private static final int DEFAULT_BLOCK_SIZE = 8;
+  private static final int DEFAULT_BLOCK_SIZE_BITS = (int) (Math.log(DEFAULT_BLOCK_SIZE) / Math.log(2));
+  private static final int DEFAULT_BLOCK_OFFSET_MASK = DEFAULT_BLOCK_SIZE - 1;
+  private static final int DEFAULT_BIT_OFFSET_MASK = Long.SIZE - 1;
   private BitSet bitSet;
-  private long m;
-  private int k;
-  private double fpp;
-  private long n;
-  // spread k-1 bits to adjacent longs, default is 2
+  private final long m;
+  private final int k;
+  private final double fpp;
+  private final long n;
+  // spread k-1 bits to adjacent longs, default is 8
   // spreading hash bits within blockSize * longs will make bloom filter L1 cache friendly
-  // blockSize = 1, means all k hash bits will be spread within a long
-  // blockSize = 8 (max value), means all k hash bits will be spread across 8 consecutive longs
-  private int totalBlockCount;
-  private int bitsPerBlock;
-  private int blockSize;
+  // default block size is set to 8 as most cache line sizes are 64 bytes and also AVX512 friendly
+  private final int totalBlockCount;
 
   public BloomKFilter(long maxNumEntries) {
-    this(maxNumEntries, DEFAULT_FPP, DEFAULT_BLOCKSIZE);
-  }
-
-  public BloomKFilter(long maxNumEntries, int blockSize) {
-    this(maxNumEntries, DEFAULT_FPP, blockSize);
+    this(maxNumEntries, DEFAULT_FPP);
   }
 
   public BloomKFilter(long maxNumEntries, double fpp) {
-    this(maxNumEntries, fpp, DEFAULT_BLOCKSIZE);
-  }
-
-  public BloomKFilter(long maxNumEntries, double fpp, int blockSize) {
     assert maxNumEntries > 0 : "maxNumEntries should be > 0";
     assert fpp > 0.0 && fpp < 1.0 : "False positive percentage should be > 0.0 & < 1.0";
-    assert blockSize > 0 && blockSize <= 8 : "blockSize should be > 0 and <= 8";
     this.fpp = fpp;
     this.n = maxNumEntries;
-    this.m = optimalNumOfBits(maxNumEntries, fpp);
-    this.k = optimalNumOfHashFunctions(maxNumEntries, m);
-    int nLongs = (int) Math.ceil((double) m / (double) Long.SIZE);
-    this.blockSize = blockSize;
+    long numBits = optimalNumOfBits(maxNumEntries, fpp);
+    this.k = optimalNumOfHashFunctions(maxNumEntries, numBits);
+    int nLongs = (int) Math.ceil((double) numBits / (double) Long.SIZE);
     // additional bits to pad long array to block size
-    int lastBlockLongs = nLongs % blockSize;
-    this.m = lastBlockLongs == 0 ? m : m + ((blockSize - lastBlockLongs) * Long.SIZE);
+    int lastBlockLongs = nLongs % DEFAULT_BLOCK_SIZE;
+    this.m = lastBlockLongs == 0 ? numBits : numBits + ((DEFAULT_BLOCK_SIZE - lastBlockLongs) * Long.SIZE);
     this.bitSet = new BitSet(m);
-    assert (bitSet.data.length % blockSize) == 0 : "bitSet has to be block aligned";
-    this.totalBlockCount = bitSet.data.length / blockSize;
-    this.bitsPerBlock = blockSize * Long.SIZE;
+    assert (bitSet.data.length % DEFAULT_BLOCK_SIZE) == 0 : "bitSet has to be block aligned";
+    this.totalBlockCount = bitSet.data.length / DEFAULT_BLOCK_SIZE;
   }
 
   // deserialize bloomfilter. see serialize() for the format.
@@ -116,6 +105,7 @@ public class BloomKFilter {
   }
 
   public void addBytes(byte[] val) {
+
     // We use the trick mentioned in "Less Hashing, Same Performance: Building a Better Bloom Filter"
     // by Kirsch et.al. From abstract 'only two hash functions are necessary to effectively
     // implement a Bloom filter without any loss in the asymptotic false positive probability'
@@ -132,22 +122,19 @@ public class BloomKFilter {
       firstHash = ~firstHash;
     }
 
-    // first hash is used to locate block
+    // first hash is used to locate start of the block
     // subsequent K hashes are used to generate K bits within a block of words
-    int blockIdx = firstHash % totalBlockCount;
-    int blockBaseOffset = blockIdx * blockSize;
+    final int blockIdx = firstHash % totalBlockCount;
+    final int blockBaseOffset = blockIdx << DEFAULT_BLOCK_SIZE_BITS;
     for (int i = 1; i <= k; i++) {
       int combinedHash = hash1 + ((i + 1) * hash2);
       // hashcode should be positive, flip all the bits if it's negative
       if (combinedHash < 0) {
         combinedHash = ~combinedHash;
       }
-      int pos = combinedHash & (bitsPerBlock - 1);
-      int blockOffset = pos >>> 6;
-      int blockAbsOffset = blockBaseOffset + blockOffset;
-      int wordIdx = pos - (blockOffset << 6);
-      long word = bitSet.data[blockAbsOffset];
-      bitSet.data[blockAbsOffset] = word | (1L << wordIdx);
+      final int wordOffset = combinedHash & DEFAULT_BLOCK_OFFSET_MASK;
+      final int bitPos = (combinedHash >>> DEFAULT_BLOCK_SIZE_BITS) & DEFAULT_BIT_OFFSET_MASK;
+      bitSet.data[blockBaseOffset + wordOffset] |= (1L << bitPos);
     }
   }
 
@@ -192,28 +179,28 @@ public class BloomKFilter {
     if (firstHash < 0) {
       firstHash = ~firstHash;
     }
-
-    // first hash is used to locate block
+    // first hash is used to locate start of the block
     // subsequent K hashes are used to generate K bits within a block of words
-    int blockIdx = firstHash % totalBlockCount;
-    int blockBaseOffset = blockIdx * blockSize;
+    final int blockIdx = firstHash % totalBlockCount;
+    final int blockBaseOffset = blockIdx << DEFAULT_BLOCK_SIZE_BITS;
+    final long[] masks = new long[DEFAULT_BLOCK_SIZE];
     for (int i = 1; i <= k; i++) {
-      int combinedHash = hash1 + ((i + 1) * hash2);
+      int combinedHash = hash1 + ((i + 1)  * hash2);
       // hashcode should be positive, flip all the bits if it's negative
       if (combinedHash < 0) {
         combinedHash = ~combinedHash;
       }
-      int pos = combinedHash & (bitsPerBlock - 1);
-      int blockOffset = pos >>> 6;
-      int blockAbsOffset = blockBaseOffset + blockOffset;
-      int wordIdx = pos - (blockOffset << 6);
-      long word = bitSet.data[blockAbsOffset];
-      if ((word & (1L << wordIdx)) == 0L) {
-        return false;
-      }
+      final int wordOffset = combinedHash & DEFAULT_BLOCK_OFFSET_MASK;
+      final int bitPos = (combinedHash >>> DEFAULT_BLOCK_SIZE_BITS) & DEFAULT_BIT_OFFSET_MASK;
+      masks[wordOffset] |= (1L << bitPos);
     }
 
-    return true;
+    long expected = 0;
+    for (int i = 0; i < DEFAULT_BLOCK_SIZE; i++) {
+      final long mask = masks[i];
+      expected |= (bitSet.data[blockBaseOffset + i] & mask) ^ mask;
+    }
+    return expected == 0;
   }
 
   public boolean testString(String val) {

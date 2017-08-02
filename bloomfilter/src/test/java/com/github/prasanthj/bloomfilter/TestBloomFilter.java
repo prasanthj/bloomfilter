@@ -472,6 +472,10 @@ public class TestBloomFilter {
       }
     }
 
+    for (int i = 0; i < size; i++) {
+      assertTrue(bf.testLong(i));
+    }
+
     double actualFpp = (double) fp / (double) size;
     double expectedFpp = bf.getFalsePositivePercent();
     if (actualFpp < expectedFpp) {
@@ -501,6 +505,10 @@ public class TestBloomFilter {
       }
     }
 
+    for (int i = 0; i < size; i++) {
+      assertTrue(bf.testLong(i));
+    }
+
     double actualFpp = (double) fp / (double) size;
     double expectedFpp = bf.getFalsePositivePercent();
     if (actualFpp < expectedFpp) {
@@ -517,6 +525,10 @@ public class TestBloomFilter {
     int fp = 0;
     for (int i = 0; i < size; i++) {
       bf.addLong(i);
+    }
+
+    for (int i = 0; i < size; i++) {
+      assertTrue(bf.testLong(i));
     }
 
     Random random = new Random();
@@ -546,6 +558,10 @@ public class TestBloomFilter {
     int fp = 0;
     for (int i = 0; i < size; i++) {
       bf.addLong(i);
+    }
+
+    for (int i = 0; i < size; i++) {
+      assertTrue(bf.testLong(i));
     }
 
     Random random = new Random();

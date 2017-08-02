@@ -49,14 +49,12 @@ public class BenchmarkBloomKFilterProbe {
   @Param({"10000", "10000000"})
   private int numEntries;
 
-  @Param({"1", "2", "4", "8"})
-  private int blockSize;
   private int[] probeArray;
   private BloomKFilter bf;
 
   @Setup
   public void setup() {
-    bf = new BloomKFilter(numEntries, blockSize);
+    bf = new BloomKFilter(numEntries);
     for (int i = 0; i < numEntries; i++) {
       bf.addLong(i);
     }

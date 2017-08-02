@@ -464,6 +464,10 @@ public class TestBloomKFilter {
       bf.addLong(i);
     }
 
+    for (int i = 0; i < size; i++) {
+      assertTrue(bf.testLong(i));
+    }
+
     Random random = new Random();
     for (int i = 0; i < size; i++) {
       int probe = random.nextInt();
@@ -491,6 +495,10 @@ public class TestBloomKFilter {
     int fp = 0;
     for (int i = 0; i < size; i++) {
       bf.addLong(i);
+    }
+
+    for (int i = 0; i < size; i++) {
+      assertTrue(bf.testLong(i));
     }
 
     Random random = new Random();
@@ -522,6 +530,10 @@ public class TestBloomKFilter {
       bf.addLong(i);
     }
 
+    for (int i = 0; i < size; i++) {
+      assertTrue(bf.testLong(i));
+    }
+
     Random random = new Random();
     for (int i = 0; i < size; i++) {
       int probe = random.nextInt();
@@ -549,6 +561,10 @@ public class TestBloomKFilter {
     int fp = 0;
     for (int i = 0; i < size; i++) {
       bf.addLong(i);
+    }
+
+    for (int i = 0; i < size; i++) {
+      assertTrue(bf.testLong(i));
     }
 
     Random random = new Random();

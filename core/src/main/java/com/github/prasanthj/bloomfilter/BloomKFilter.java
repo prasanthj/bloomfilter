@@ -49,6 +49,7 @@ public class BloomKFilter {
   private final int k;
   private final double fpp;
   private final long n;
+  private final long[] masks = new long[DEFAULT_BLOCK_SIZE];
   // spread k-1 bits to adjacent longs, default is 8
   // spreading hash bits within blockSize * longs will make bloom filter L1 cache friendly
   // default block size is set to 8 as most cache line sizes are 64 bytes and also AVX512 friendly
@@ -183,7 +184,6 @@ public class BloomKFilter {
     // subsequent K hashes are used to generate K bits within a block of words
     final int blockIdx = firstHash % totalBlockCount;
     final int blockBaseOffset = blockIdx << DEFAULT_BLOCK_SIZE_BITS;
-    final long[] masks = new long[DEFAULT_BLOCK_SIZE];
     for (int i = 1; i <= k; i++) {
       int combinedHash = hash1 + ((i + 1)  * hash2);
       // hashcode should be positive, flip all the bits if it's negative
@@ -199,6 +199,8 @@ public class BloomKFilter {
     for (int i = 0; i < DEFAULT_BLOCK_SIZE; i++) {
       final long mask = masks[i];
       expected |= (bitSet.data[blockBaseOffset + i] & mask) ^ mask;
+      // clear mask after use
+      masks[i] &= 0;
     }
     return expected == 0;
   }

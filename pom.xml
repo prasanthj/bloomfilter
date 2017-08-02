@@ -10,8 +10,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>bloomfilter</module>
-        <module>bloomfilter-benchmarks</module>
+        <module>core</module>
+	<module>benchmarks</module>
     </modules>
 
     <dependencies>

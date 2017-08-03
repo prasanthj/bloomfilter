@@ -16,6 +16,7 @@
 package com.github.prasanthj.bloomfilter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -68,8 +69,8 @@ public class BloomKFilter {
     this.k = optimalNumOfHashFunctions(maxNumEntries, numBits);
     int nLongs = (int) Math.ceil((double) numBits / (double) Long.SIZE);
     // additional bits to pad long array to block size
-    int lastBlockLongs = nLongs % DEFAULT_BLOCK_SIZE;
-    this.m = lastBlockLongs == 0 ? numBits : numBits + ((DEFAULT_BLOCK_SIZE - lastBlockLongs) * Long.SIZE);
+    int padLongs = DEFAULT_BLOCK_SIZE - nLongs % DEFAULT_BLOCK_SIZE;
+    this.m = (nLongs + padLongs) * Long.SIZE;
     this.bitSet = new BitSet(m);
     assert (bitSet.data.length % DEFAULT_BLOCK_SIZE) == 0 : "bitSet has to be block aligned";
     this.totalBlockCount = bitSet.data.length / DEFAULT_BLOCK_SIZE;
@@ -123,7 +124,7 @@ public class BloomKFilter {
       firstHash = ~firstHash;
     }
 
-    // first hash is used to locate start of the block
+    // first hash is used to locate start of the block (blockBaseOffset)
     // subsequent K hashes are used to generate K bits within a block of words
     final int blockIdx = firstHash % totalBlockCount;
     final int blockBaseOffset = blockIdx << DEFAULT_BLOCK_SIZE_BITS;
@@ -133,9 +134,11 @@ public class BloomKFilter {
       if (combinedHash < 0) {
         combinedHash = ~combinedHash;
       }
-      final int wordOffset = combinedHash & DEFAULT_BLOCK_OFFSET_MASK;
+      // LSB 3 bits is used to locate offset within the block
+      final int absOffset = blockBaseOffset + (combinedHash & DEFAULT_BLOCK_OFFSET_MASK);
+      // Next 6 bits are used to locate offset within a long/word
       final int bitPos = (combinedHash >>> DEFAULT_BLOCK_SIZE_BITS) & DEFAULT_BIT_OFFSET_MASK;
-      bitSet.data[blockBaseOffset + wordOffset] |= (1L << bitPos);
+      bitSet.data[absOffset] |= (1L << bitPos);
     }
   }
 
@@ -180,28 +183,39 @@ public class BloomKFilter {
     if (firstHash < 0) {
       firstHash = ~firstHash;
     }
-    // first hash is used to locate start of the block
+
+    // first hash is used to locate start of the block (blockBaseOffset)
     // subsequent K hashes are used to generate K bits within a block of words
+    // To avoid branches during probe, a separate masks array is used for each longs/words within a block.
+    // data array and masks array are then traversed together and checked for corresponding set bits.
     final int blockIdx = firstHash % totalBlockCount;
     final int blockBaseOffset = blockIdx << DEFAULT_BLOCK_SIZE_BITS;
+
+    // iterate and update masks array
     for (int i = 1; i <= k; i++) {
       int combinedHash = hash1 + ((i + 1)  * hash2);
       // hashcode should be positive, flip all the bits if it's negative
       if (combinedHash < 0) {
         combinedHash = ~combinedHash;
       }
+      // LSB 3 bits is used to locate offset within the block
       final int wordOffset = combinedHash & DEFAULT_BLOCK_OFFSET_MASK;
+      // Next 6 bits are used to locate offset within a long/word
       final int bitPos = (combinedHash >>> DEFAULT_BLOCK_SIZE_BITS) & DEFAULT_BIT_OFFSET_MASK;
       masks[wordOffset] |= (1L << bitPos);
     }
 
+    // traverse data and masks array together, check for set bits
     long expected = 0;
     for (int i = 0; i < DEFAULT_BLOCK_SIZE; i++) {
       final long mask = masks[i];
       expected |= (bitSet.data[blockBaseOffset + i] & mask) ^ mask;
-      // clear mask after use
-      masks[i] &= 0;
     }
+
+    // clear the mask for array reuse (this is to avoid masks array allocation in inner loop)
+    Arrays.fill(masks, 0);
+
+    // if all bits are set, expected should be 0
     return expected == 0;
   }
 
@@ -303,6 +317,13 @@ public class BloomKFilter {
     this.bitSet.putAll(that.bitSet);
   }
 
+  public long getNumBits() {
+    return m;
+  }
+
+  public long[] getBitSet() {
+    return bitSet.getData();
+  }
   /**
    * Bare metal bitset implementation. For performance reasons, this implementation does not check
    * for index bounds nor expand the bitset size if the specified index is greater than the size.

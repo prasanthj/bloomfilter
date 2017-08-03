@@ -77,6 +77,10 @@ public class TestBloomKFilter {
     assertEquals(729844, BloomKFilter.optimalNumOfBits(100000, 0.03));
     assertEquals(7298440, BloomKFilter.optimalNumOfBits(1000000, 0.03));
     assertEquals(6235224, BloomKFilter.optimalNumOfBits(1000000, 0.05));
+
+    BloomKFilter bloomKFilter = new BloomKFilter(40);
+    assertEquals(8, bloomKFilter.getBitSet().length);
+    assertEquals(bloomKFilter.getNumBits(), bloomKFilter.getBitSize());
   }
 
   @Test

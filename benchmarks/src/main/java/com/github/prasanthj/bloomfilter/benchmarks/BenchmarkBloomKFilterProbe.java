@@ -27,6 +27,7 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
+import org.openjdk.jmh.profile.DTraceAsmProfiler;
 import org.openjdk.jmh.profile.LinuxPerfAsmProfiler;
 import org.openjdk.jmh.profile.LinuxPerfNormProfiler;
 import org.openjdk.jmh.profile.LinuxPerfProfiler;
@@ -92,6 +93,7 @@ public class BenchmarkBloomKFilterProbe {
       .addProfiler(LinuxPerfProfiler.class)
       .addProfiler(LinuxPerfNormProfiler.class)
       .addProfiler(LinuxPerfAsmProfiler.class)
+      .addProfiler(DTraceAsmProfiler.class)
       .build();
 
     new Runner(opt).run();

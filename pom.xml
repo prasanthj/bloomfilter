@@ -11,7 +11,7 @@
 
     <modules>
         <module>core</module>
-	<module>benchmarks</module>
+        <module>benchmarks</module>
     </modules>
 
     <dependencies>
@@ -25,8 +25,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <jmh.version>${project.version}</jmh.version>
-        <javac.target>1.7</javac.target>
+        <javac.target>1.8</javac.target>
         <uberjar.name>benchmarks</uberjar.name>
     </properties>
 
